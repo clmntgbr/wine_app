@@ -31,6 +31,35 @@ class HomePage extends StatelessWidget {
   }
 }
 
+class CellarPage extends StatelessWidget {
+  const CellarPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: Container(
+          color: Colors.white,
+        ),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50.0),
+          child: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const HomePage()));
+                },
+              )),
+        ));
+  }
+}
+
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWidget({Key? key}) : super(key: key);
 
@@ -40,12 +69,14 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      title: const Text('Home'),
       backgroundColor: Colors.white,
-      actions: const [
+      actions: [
         IconButton(
-            onPressed: null,
-            icon: Icon(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const CellarPage()));
+            },
+            icon: const Icon(
               Icons.app_registration_rounded,
               color: Colors.black,
               size: 30,
