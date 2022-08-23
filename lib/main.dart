@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:wine_app/model/get_cellars.dart';
+import 'package:wine_app/api_service.dart';
 
 void main() {
   runApp(const MyApp());
@@ -31,7 +33,8 @@ class HomePage extends StatelessWidget {
 }
 
 class CellarPage extends StatelessWidget {
-  const CellarPage({Key? key}) : super(key: key);
+  const CellarPage({Key? key, required Future<Welcome?> cellars})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -72,8 +75,11 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       actions: [
         IconButton(
             onPressed: () {
-              Navigator.push(context,
-                  MaterialPageRoute(builder: (_) => const CellarPage()));
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) =>
+                          CellarPage(cellars: ApiService().getCellars())));
             },
             icon: const Icon(
               Icons.app_registration_rounded,

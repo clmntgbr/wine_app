@@ -1,11 +1,12 @@
 import 'dart:async';
-
+import 'package:flutter/material.dart';
 import 'package:http/http.dart';
 import 'constants.dart';
-import 'model/cellar_model.dart';
+import 'model/get_cellars.dart';
 
 class ApiService {
-  Future<GetCellars?> getCellars() async {
+  Future<Welcome?> getCellars() async {
+    debugPrint('getCellars');
     Response response = await get(
         Uri.parse(ApiConstants.baseUrl + ApiConstants.getCellarsEndpoint),
         headers: {
@@ -16,7 +17,9 @@ class ApiService {
         });
 
     if (response.statusCode == 200) {
-      GetCellars model = getCellarsFromJson(response.body);
+      debugPrint('${response.statusCode}');
+      Welcome model = welcomeFromJson(response.body.toString());
+      debugPrint(model.toString());
       return model;
     }
 

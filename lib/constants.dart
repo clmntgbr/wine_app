@@ -1,5 +1,5 @@
 class ApiConstants {
-  static String baseUrl = 'https://jsonplaceholder.typicode.com';
-  static String getUsersEndpoint = '/users';
-  static String getCellarsEndpoint = '/users';
+  static String baseUrl = 'https://wine.traefik.me';
+  static String getUsersEndpoint = '/api/users';
+  static String getCellarsEndpoint = '/api/cellars';
 }
