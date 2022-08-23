@@ -6,7 +6,7 @@ import 'constants.dart';
 import 'model/get_cellars.dart';
 
 class ApiService {
-  Future<Book?> getCellars() async {
+  Future<Cellars?> getCellars() async {
     debugPrint('getCellars');
 
     Response response = await get(
@@ -19,7 +19,7 @@ class ApiService {
         });
 
     if (response.statusCode == 200) {
-      Book model = bookFromJson(response.body.toString());
+      Cellars model = cellarsFromJson(response.body.toString());
       debugPrint(model.toString());
       return model;
     }

@@ -33,7 +33,7 @@ class HomePage extends StatelessWidget {
 }
 
 class CellarPage extends StatelessWidget {
-  const CellarPage({Key? key, required Future<Book?> cellars})
+  const CellarPage({Key? key, required Future<Cellars?> cellars})
       : super(key: key);
 
   @override

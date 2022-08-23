@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-Book bookFromJson(String str) => Book.fromJson(json.decode(str));
+Cellars cellarsFromJson(String str) => Cellars.fromJson(json.decode(str));
 
-class Book {
+class Cellars {
   String context;
   String id;
   String type;
@@ -15,15 +15,15 @@ class Book {
     return '{context: $context, id: $id, type: $type, hydraMember: $hydraMember}';
   }
 
-  Book({
+  Cellars({
     required this.context,
     required this.id,
     required this.type,
     required this.hydraMember,
   });
 
-  factory Book.fromJson(Map<String, dynamic> json) {
-    return Book(
+  factory Cellars.fromJson(Map<String, dynamic> json) {
+    return Cellars(
       context: json['@context'],
       id: json['@id'],
       type: json['@type'],
@@ -39,15 +39,19 @@ class HydraMember {
   int id;
   String? name;
   bool isActive;
+  int row;
+  int column;
 
-  HydraMember(this.contextId, this.id, this.name, this.isActive);
+  HydraMember(
+      this.contextId, this.id, this.name, this.isActive, this.row, this.column);
 
   factory HydraMember.fromJson(dynamic json) {
-    return HydraMember(json['@id'], json['id'], json['name'], json['isActive']);
+    return HydraMember(json['@id'], json['id'], json['name'], json['isActive'],
+        json['row'], json['clmn']);
   }
 
   @override
   String toString() {
-    return '{@id: $contextId, id: $id, name: $name}, isActive: $isActive}';
+    return '{@id: $contextId, id: $id, name: $name, isActive: $isActive, row: $row, column: $column}';
   }
 }
