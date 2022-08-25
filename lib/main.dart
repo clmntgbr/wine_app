@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:wine_app/api_service.dart';
+import 'package:wine_app/model/get_bottles.dart';
+import 'package:wine_app/model/get_cellars.dart';
 
 void main() {
   runApp(const MyApp());
@@ -79,6 +82,7 @@ class SearchSection extends StatelessWidget {
                     padding: const EdgeInsets.all(10),
                     shape: const CircleBorder(),
                     shadowColor: Colors.white,
+                    primary: Colors.redAccent,
                   ),
                   child: const Icon(
                     Icons.search,
@@ -95,8 +99,21 @@ class SearchSection extends StatelessWidget {
   }
 }
 
-class BottlesSection extends StatelessWidget {
-  const BottlesSection({Key? key}) : super(key: key);
+class BottlesSection extends StatefulWidget {
+  const BottlesSection({super.key});
+
+  @override
+  State<BottlesSection> createState() => BottlesSectionState();
+}
+
+class BottlesSectionState extends State<BottlesSection> {
+  late Future<Bottles> bottles;
+
+  @override
+  void initState() {
+    super.initState();
+    bottles = ApiService().getBottles();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -356,9 +373,35 @@ class CellarsPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    debugPrint('CellarsPage');
     return Scaffold(
         body: const CellarsSection(),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50.0),
+          child: AppBar(
+              backgroundColor: Colors.white,
+              elevation: 0,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const HomePage()));
+                },
+              )),
+        ));
+  }
+}
+
+class BottlesLikedPage extends StatelessWidget {
+  const BottlesLikedPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: const BottlesLikedSection(),
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(50.0),
           child: AppBar(
@@ -390,6 +433,17 @@ class CellarsSection extends StatelessWidget {
   }
 }
 
+class BottlesLikedSection extends StatelessWidget {
+  const BottlesLikedSection({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      color: Colors.green,
+    );
+  }
+}
+
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWidget({Key? key}) : super(key: key);
 
@@ -402,13 +456,15 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
       backgroundColor: Colors.white,
       actions: [
         IconButton(
-          icon: Icon(
-            Icons.favorite_outline_rounded,
-            color: Colors.grey[800],
-            size: 20,
-          ),
-          onPressed: null,
-        ),
+            icon: Icon(
+              Icons.favorite_outline_rounded,
+              color: Colors.grey[800],
+              size: 20,
+            ),
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const BottlesLikedPage()));
+            }),
         IconButton(
             onPressed: () {
               Navigator.push(context,
