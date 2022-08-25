@@ -99,6 +99,8 @@ class SearchSection extends StatelessWidget {
   }
 }
 
+// Bottles
+
 class BottlesSection extends StatefulWidget {
   const BottlesSection({super.key});
 
@@ -357,6 +359,8 @@ class BottlesCard extends StatelessWidget {
   }
 }
 
+// Cellars
+
 class CellarsPage extends StatelessWidget {
   const CellarsPage({Key? key}) : super(key: key);
 
@@ -367,6 +371,14 @@ class CellarsPage extends StatelessWidget {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(50.0),
           child: AppBar(
+              title: Text(
+                'Caves à vins',
+                style: GoogleFonts.nunito(
+                  color: Colors.black,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w400,
+                ),
+              ),
               backgroundColor: Colors.white,
               elevation: 0,
               leading: IconButton(
@@ -381,6 +393,50 @@ class CellarsPage extends StatelessWidget {
                 },
               )),
         ));
+  }
+}
+
+class CellarsSection extends StatefulWidget {
+  const CellarsSection({Key? key}) : super(key: key);
+
+  @override
+  State<CellarsSection> createState() => CellarsSectionState();
+}
+
+class CellarsSectionState extends State<CellarsSection> {
+  late Future<Cellars> cellars;
+
+  @override
+  void initState() {
+    super.initState();
+    cellars = ApiService().getCellars();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(10),
+      color: Colors.white,
+      child: Column(
+        children: [
+          Column(children: [
+            FutureBuilder<Cellars>(
+              future: cellars,
+              builder: (context, snapshot) {
+                List<Widget> children = [];
+                if (snapshot.hasData) {
+                  for (HydraMember cellar in snapshot.data!.hydraMember) {
+                    children.add(CellarsCard(cellar: cellar));
+                  }
+                  return Column(children: children);
+                }
+                return const CircularProgressIndicator();
+              },
+            )
+          ]),
+        ],
+      ),
+    );
   }
 }
 
@@ -551,6 +607,8 @@ class CellarsCard extends StatelessWidget {
   }
 }
 
+// Bottles Liked
+
 class BottlesLikedPage extends StatelessWidget {
   const BottlesLikedPage({Key? key}) : super(key: key);
 
@@ -578,17 +636,6 @@ class BottlesLikedPage extends StatelessWidget {
   }
 }
 
-class CellarsSection extends StatelessWidget {
-  const CellarsSection({Key? key}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.red,
-    );
-  }
-}
-
 class BottlesLikedSection extends StatelessWidget {
   const BottlesLikedSection({Key? key}) : super(key: key);
 
@@ -599,6 +646,8 @@ class BottlesLikedSection extends StatelessWidget {
     );
   }
 }
+
+// AppBar Home
 
 class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
   const AppBarWidget({Key? key}) : super(key: key);
