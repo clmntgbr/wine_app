@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:wine_app/model/get_cellars.dart';
-import 'package:wine_app/api_service.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 void main() {
@@ -354,11 +352,11 @@ class BottlesCard extends StatelessWidget {
 }
 
 class CellarsPage extends StatelessWidget {
-  const CellarsPage({Key? key, required Future<Cellars?> cellars})
-      : super(key: key);
+  const CellarsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    debugPrint('CellarsPage');
     return Scaffold(
         body: const CellarsSection(),
         appBar: PreferredSize(
@@ -413,11 +411,8 @@ class AppBarWidget extends StatelessWidget implements PreferredSizeWidget {
         ),
         IconButton(
             onPressed: () {
-              Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                      builder: (_) =>
-                          CellarsPage(cellars: ApiService().getCellars())));
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (_) => const CellarsPage()));
             },
             icon: Icon(
               Icons.app_registration_rounded,

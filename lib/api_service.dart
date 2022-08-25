@@ -5,7 +5,7 @@ import 'constants.dart';
 import 'model/get_cellars.dart';
 
 class ApiService {
-  Future<Cellars?> getCellars() async {
+  Future<Cellars> getCellars() async {
     debugPrint('getCellars');
 
     Response response = await get(
@@ -23,6 +23,6 @@ class ApiService {
       return model;
     }
 
-    return null;
+    throw Exception('Failed to load Cellars');
   }
 }
