@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine_app/api_service.dart';
-import 'package:wine_app/model/get_bottles.dart';
+import 'package:wine_app/model/get_bottles.dart' as get_bottles;
 import 'package:wine_app/model/get_cellars.dart';
 
 void main() {
@@ -107,7 +107,7 @@ class BottlesSection extends StatefulWidget {
 }
 
 class BottlesSectionState extends State<BottlesSection> {
-  late Future<Bottles> bottles;
+  late Future<get_bottles.Bottles> bottles;
 
   @override
   void initState() {
@@ -117,84 +117,73 @@ class BottlesSectionState extends State<BottlesSection> {
 
   @override
   Widget build(BuildContext context) {
-    final List hotelList = [
-      {
-        'title': 'Grand Royl Hotel',
-        'place': 'wembley, London',
-        'distance': 2,
-        'review': 36,
-        'picture': 'assets/images/hotel_1.png',
-        'price': '180',
-      },
-      {
-        'title': 'Queen Hotel',
-        'place': 'wembley, London',
-        'distance': 3,
-        'review': 13,
-        'picture': 'assets/images/hotel_2.png',
-        'price': '220',
-      },
-      {
-        'title': 'Grand Mal Hotel',
-        'place': 'wembley, London',
-        'distance': 6,
-        'review': 88,
-        'picture': 'assets/images/hotel_3.png',
-        'price': '400',
-      },
-      {
-        'title': 'Hilton',
-        'place': 'wembley, London',
-        'distance': 11,
-        'review': 34,
-        'picture': 'assets/images/hotel_4.png',
-        'price': '910',
-      },
-    ];
-
     return Container(
       padding: const EdgeInsets.all(10),
       color: Colors.white,
       child: Column(
         children: [
-          SizedBox(
-            height: 50,
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  '550 bottles founds',
-                  style: GoogleFonts.nunito(
-                    color: Colors.black,
-                    fontSize: 15,
-                  ),
-                ),
-                Row(
-                  children: [
-                    Text(
-                      'Filters',
-                      style: GoogleFonts.nunito(
-                        color: Colors.black,
-                        fontSize: 15,
-                      ),
-                    ),
-                    const IconButton(
-                      icon: Icon(
-                        Icons.filter_list_outlined,
-                        size: 25,
-                      ),
-                      onPressed: null,
-                    ),
-                  ],
-                )
-              ],
+          Column(children: [
+            FutureBuilder<get_bottles.Bottles>(
+              future: bottles,
+              builder: (context, snapshot) {
+                List<Widget> children = [];
+                if (snapshot.hasData) {
+                  children.add(
+                      BottlesFilter(length: snapshot.data!.hydraMember.length));
+                  for (get_bottles.HydraMember bottle
+                      in snapshot.data!.hydraMember) {
+                    children.add(BottlesCard(bottle: bottle));
+                  }
+                  return Column(children: children);
+                }
+                return const CircularProgressIndicator();
+              },
+            )
+          ]),
+        ],
+      ),
+    );
+  }
+}
+
+class BottlesFilter extends StatelessWidget {
+  const BottlesFilter({Key? key, required this.length}) : super(key: key);
+
+  final int length;
+
+  @override
+  Widget build(BuildContext context) {
+    return SizedBox(
+      width: MediaQuery.of(context).size.width - 40,
+      height: 50,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            '$length bottles founds',
+            style: GoogleFonts.nunito(
+              color: Colors.black,
+              fontSize: 15,
             ),
           ),
-          Column(
-            children: hotelList.map((hotelData) {
-              return BottlesCard(hotelData: hotelData);
-            }).toList(),
-          ),
+          Row(
+            children: [
+              Text(
+                'Filters',
+                style: GoogleFonts.nunito(
+                  color: Colors.black,
+                  fontSize: 15,
+                ),
+              ),
+              const IconButton(
+                icon: Icon(
+                  Icons.filter_list_outlined,
+                  size: 25,
+                ),
+                onPressed: null,
+              ),
+            ],
+          )
         ],
       ),
     );
@@ -202,9 +191,9 @@ class BottlesSectionState extends State<BottlesSection> {
 }
 
 class BottlesCard extends StatelessWidget {
-  final Map hotelData;
+  final get_bottles.HydraMember bottle;
 
-  const BottlesCard({Key? key, required this.hotelData}) : super(key: key);
+  const BottlesCard({Key? key, required this.bottle}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -230,14 +219,14 @@ class BottlesCard extends StatelessWidget {
         children: [
           Container(
             height: 140,
-            decoration: BoxDecoration(
-              borderRadius: const BorderRadius.only(
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
                 topLeft: Radius.circular(18),
                 topRight: Radius.circular(18),
               ),
               image: DecorationImage(
                 image: AssetImage(
-                  hotelData['picture'],
+                  'assets/images/hotel_1.png',
                 ),
                 fit: BoxFit.cover,
               ),
@@ -266,14 +255,14 @@ class BottlesCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  hotelData['title'],
+                  'Grand Royl Hotel',
                   style: GoogleFonts.nunito(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
                   ),
                 ),
                 Text(
-                  '\$' + hotelData['price'],
+                  '400e',
                   style: GoogleFonts.nunito(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,
@@ -288,7 +277,7 @@ class BottlesCard extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  hotelData['place'],
+                  'wembley, London',
                   style: GoogleFonts.nunito(
                     fontSize: 14,
                     color: Colors.grey[500],
@@ -302,7 +291,7 @@ class BottlesCard extends StatelessWidget {
                       size: 14.0,
                     ),
                     Text(
-                      '${hotelData['distance']} km to city',
+                      '2 km to city',
                       style: GoogleFonts.nunito(
                         fontSize: 14,
                         color: Colors.grey[500],
@@ -352,7 +341,7 @@ class BottlesCard extends StatelessWidget {
                 ),
                 const SizedBox(width: 20),
                 Text(
-                  '${hotelData['review']} reviews',
+                  '42 reviews',
                   style: GoogleFonts.nunito(
                     fontSize: 14,
                     color: Colors.grey[500],
@@ -392,6 +381,173 @@ class CellarsPage extends StatelessWidget {
                 },
               )),
         ));
+  }
+}
+
+class CellarsCard extends StatelessWidget {
+  final HydraMember cellar;
+
+  const CellarsCard({Key? key, required this.cellar}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      margin: const EdgeInsets.all(10),
+      height: 230,
+      width: double.infinity,
+      decoration: BoxDecoration(
+        color: Colors.white,
+        borderRadius: const BorderRadius.all(
+          Radius.circular(18),
+        ),
+        boxShadow: [
+          BoxShadow(
+            color: Colors.grey.shade200,
+            spreadRadius: 4,
+            blurRadius: 6,
+            offset: const Offset(0, 3),
+          ),
+        ],
+      ),
+      child: Column(
+        children: [
+          Container(
+            height: 140,
+            decoration: const BoxDecoration(
+              borderRadius: BorderRadius.only(
+                topLeft: Radius.circular(18),
+                topRight: Radius.circular(18),
+              ),
+              image: DecorationImage(
+                image: AssetImage(
+                  'assets/images/hotel_1.png',
+                ),
+                fit: BoxFit.cover,
+              ),
+            ),
+            child: Stack(
+              children: [
+                Positioned(
+                  top: 5,
+                  right: -15,
+                  child: MaterialButton(
+                    color: Colors.white,
+                    shape: const CircleBorder(),
+                    onPressed: () {},
+                    child: const Icon(
+                      Icons.favorite_outline_rounded,
+                      size: 20,
+                    ),
+                  ),
+                )
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'Grand Royl Hotel',
+                  style: GoogleFonts.nunito(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+                Text(
+                  '400e',
+                  style: GoogleFonts.nunito(
+                    fontSize: 18,
+                    fontWeight: FontWeight.w800,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.symmetric(horizontal: 10),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Text(
+                  'wembley, London',
+                  style: GoogleFonts.nunito(
+                    fontSize: 14,
+                    color: Colors.grey[500],
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+                Row(
+                  children: [
+                    const Icon(
+                      Icons.place,
+                      size: 14.0,
+                    ),
+                    Text(
+                      '2 km to city',
+                      style: GoogleFonts.nunito(
+                        fontSize: 14,
+                        color: Colors.grey[500],
+                        fontWeight: FontWeight.w400,
+                      ),
+                    ),
+                  ],
+                ),
+                Text(
+                  'per night',
+                  style: GoogleFonts.nunito(
+                    fontSize: 14,
+                    color: Colors.grey.shade800,
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+          Container(
+            margin: const EdgeInsets.fromLTRB(10, 3, 10, 0),
+            child: Row(
+              children: [
+                Row(
+                  children: const [
+                    Icon(
+                      Icons.star_rate,
+                      size: 14.0,
+                    ),
+                    Icon(
+                      Icons.star_rate,
+                      size: 14.0,
+                    ),
+                    Icon(
+                      Icons.star_rate,
+                      size: 14.0,
+                    ),
+                    Icon(
+                      Icons.star_rate,
+                      size: 14.0,
+                    ),
+                    Icon(
+                      Icons.star_border,
+                      size: 14.0,
+                    ),
+                  ],
+                ),
+                const SizedBox(width: 20),
+                Text(
+                  '42 reviews',
+                  style: GoogleFonts.nunito(
+                    fontSize: 14,
+                    color: Colors.grey[500],
+                    fontWeight: FontWeight.w400,
+                  ),
+                ),
+              ],
+            ),
+          ),
+        ],
+      ),
+    );
   }
 }
 
