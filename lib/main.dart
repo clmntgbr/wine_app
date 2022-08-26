@@ -209,6 +209,8 @@ class BottlesCard extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Color buttonColor = Colors.white;
+
     return Container(
       margin: const EdgeInsets.all(10),
       height: 230,
@@ -249,9 +251,12 @@ class BottlesCard extends StatelessWidget {
                   top: 5,
                   right: -15,
                   child: MaterialButton(
-                    color: Colors.white,
+                    color: buttonColor,
                     shape: const CircleBorder(),
-                    onPressed: () {},
+                    onPressed: () {
+                      ApiService().putBottlesLiked(bottle.id, !bottle.isLiked);
+                      bottle.isLiked = !bottle.isLiked;
+                    },
                     child: const Icon(
                       Icons.favorite_outline_rounded,
                       size: 20,
@@ -638,7 +643,7 @@ class BottlesLikedPage extends StatelessWidget {
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(50.0),
           child: AppBar(
-              backgroundColor: Colors.white,
+              backgroundColor: const Color.fromARGB(1, 250, 250, 250),
               elevation: 0,
               leading: IconButton(
                 icon: const Icon(
@@ -655,13 +660,56 @@ class BottlesLikedPage extends StatelessWidget {
   }
 }
 
-class BottlesLikedSection extends StatelessWidget {
+class BottlesLikedSection extends StatefulWidget {
   const BottlesLikedSection({Key? key}) : super(key: key);
+
+  @override
+  State<BottlesLikedSection> createState() => BottlesLikedSectionState();
+}
+
+class BottlesLikedSectionState extends State<BottlesLikedSection> {
+  late Future<get_bottles.Bottles> bottles;
+
+  @override
+  void initState() {
+    super.initState();
+    bottles = ApiService().getBottlesLiked();
+  }
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: Colors.green,
+      width: MediaQuery.of(context).size.width,
+      padding: const EdgeInsets.all(10),
+      color: const Color.fromARGB(1, 250, 250, 250),
+      child: Column(
+        children: [
+          Column(children: [
+            FutureBuilder<get_bottles.Bottles>(
+              future: bottles,
+              builder: (context, snapshot) {
+                List<Widget> children = [];
+                if (snapshot.hasData) {
+                  for (get_bottles.HydraMember bottle
+                      in snapshot.data!.hydraMember) {
+                    children.add(BottlesCard(bottle: bottle));
+                  }
+                  return Column(children: children);
+                }
+                return Container(
+                    padding: const EdgeInsets.all(50),
+                    child: const SizedBox(
+                      height: 100.0,
+                      width: 100.0,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    ));
+              },
+            )
+          ]),
+        ],
+      ),
     );
   }
 }

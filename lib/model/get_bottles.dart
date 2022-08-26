@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'dart:ffi';
 
 Bottles bottlesFromJson(String str) => Bottles.fromJson(json.decode(str));
 
@@ -38,17 +39,18 @@ class HydraMember {
   String formatName;
   String? position;
   String? alertAt;
+  bool isLiked;
 
-  HydraMember(
-      this.contextId, this.id, this.formatName, this.position, this.alertAt);
+  HydraMember(this.contextId, this.id, this.formatName, this.position,
+      this.alertAt, this.isLiked);
 
   factory HydraMember.fromJson(dynamic json) {
     return HydraMember(json['@id'], json['id'], json['formatName'],
-        json['position'], json['alertAt']);
+        json['position'], json['alertAt'], json['isLiked']);
   }
 
   @override
   String toString() {
-    return '{@id: $contextId, id: $id, formatName: $formatName, position: $position, alertAt: $alertAt}';
+    return '{@id: $contextId, id: $id, formatName: $formatName, position: $position, alertAt: $alertAt, isLiked: $isLiked}';
   }
 }
