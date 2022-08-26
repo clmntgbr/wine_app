@@ -202,14 +202,29 @@ class BottlesFilter extends StatelessWidget {
   }
 }
 
-class BottlesCard extends StatelessWidget {
+class BottlesCard extends StatefulWidget {
   final get_bottles.HydraMember bottle;
 
   const BottlesCard({Key? key, required this.bottle}) : super(key: key);
 
   @override
+  State<BottlesCard> createState() => BottlesCardState();
+}
+
+class BottlesCardState extends State<BottlesCard> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    get_bottles.HydraMember bottle = widget.bottle;
+
     Color buttonColor = Colors.white;
+    if (bottle.isLiked) {
+      buttonColor = Colors.greenAccent;
+    }
 
     return Container(
       margin: const EdgeInsets.all(10),
@@ -256,6 +271,7 @@ class BottlesCard extends StatelessWidget {
                     onPressed: () {
                       ApiService().putBottlesLiked(bottle.id, !bottle.isLiked);
                       bottle.isLiked = !bottle.isLiked;
+                      setState(() {});
                     },
                     child: const Icon(
                       Icons.favorite_outline_rounded,
@@ -373,7 +389,6 @@ class BottlesCard extends StatelessWidget {
     );
   }
 }
-
 // Cellars
 
 class CellarsPage extends StatelessWidget {
@@ -639,7 +654,7 @@ class BottlesLikedPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        body: const BottlesLikedSection(),
+        body: const SingleChildScrollView(child: BottlesLikedSection()),
         appBar: PreferredSize(
           preferredSize: const Size.fromHeight(50.0),
           child: AppBar(
