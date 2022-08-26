@@ -29,12 +29,14 @@ class HomePage extends StatelessWidget {
     return Scaffold(
         appBar: const AppBarWidget(),
         body: SingleChildScrollView(
-          child: Column(
-            children: const [
-              SearchSection(),
-              BottlesSection(),
-            ],
-          ),
+          child: Container(
+              color: const Color.fromARGB(1, 250, 250, 250),
+              child: Column(
+                children: const [
+                  SearchSection(),
+                  BottlesSection(),
+                ],
+              )),
         ));
   }
 }
@@ -121,7 +123,7 @@ class BottlesSectionState extends State<BottlesSection> {
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.all(10),
-      color: Colors.white,
+      color: const Color.fromARGB(1, 250, 250, 250),
       child: Column(
         children: [
           Column(children: [
@@ -138,7 +140,15 @@ class BottlesSectionState extends State<BottlesSection> {
                   }
                   return Column(children: children);
                 }
-                return const CircularProgressIndicator();
+                return Container(
+                    padding: const EdgeInsets.all(50),
+                    child: const SizedBox(
+                      height: 100.0,
+                      width: 100.0,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    ));
               },
             )
           ]),
@@ -415,6 +425,7 @@ class CellarsSectionState extends State<CellarsSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: MediaQuery.of(context).size.width,
       padding: const EdgeInsets.all(10),
       color: Colors.white,
       child: Column(
@@ -430,7 +441,15 @@ class CellarsSectionState extends State<CellarsSection> {
                   }
                   return Column(children: children);
                 }
-                return const CircularProgressIndicator();
+                return Container(
+                    padding: const EdgeInsets.all(50),
+                    child: const SizedBox(
+                      height: 100.0,
+                      width: 100.0,
+                      child: CircularProgressIndicator(
+                        backgroundColor: Colors.redAccent,
+                      ),
+                    ));
               },
             )
           ]),
