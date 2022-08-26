@@ -187,7 +187,7 @@ class BottlesCardState extends State<BottlesCard> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Text(
-                  'Grand Royl Hotel',
+                  'id: ${bottle.id}',
                   style: GoogleFonts.nunito(
                     fontSize: 18,
                     fontWeight: FontWeight.w800,

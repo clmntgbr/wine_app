@@ -107,7 +107,11 @@ class CellarsCard extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.all(10),
         child: MaterialButton(
-            onPressed: () {},
+            onPressed: () {
+              ApiService().putCellarsActive(cellar.id, !cellar.isActive);
+              Navigator.push(
+                  context, MaterialPageRoute(builder: (_) => const HomePage()));
+            },
             padding: const EdgeInsets.all(0),
             child: Container(
               margin: const EdgeInsets.all(0),
@@ -136,7 +140,7 @@ class CellarsCard extends StatelessWidget {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Grand Royl Hotel',
+                          'id: ${cellar.id}',
                           style: GoogleFonts.nunito(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
