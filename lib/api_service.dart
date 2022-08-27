@@ -9,10 +9,10 @@ import 'globals.dart' as globals;
 
 class ApiService {
   Future<Cellars> getCellars() async {
-    debugPrint(ApiConstants.baseUrl + ApiConstants.getCellarsEndpoint);
+    debugPrint('GET${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}');
 
     Response response = await get(
-        Uri.parse(ApiConstants.baseUrl + ApiConstants.getCellarsEndpoint),
+        Uri.parse(ApiConstants.baseUrl + ApiConstants.cellarsEndpoint),
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
@@ -35,11 +35,11 @@ class ApiService {
     }
 
     debugPrint(
-        '${ApiConstants.baseUrl}${ApiConstants.getBottlesEndpoint}?exists%5BemptyAt%5D=false$cellarIsActive');
+        'GET ${ApiConstants.baseUrl}${ApiConstants.bottlesEndpoint}?exists%5BemptyAt%5D=false$cellarIsActive');
 
     Response response = await get(
         Uri.parse(
-            '${ApiConstants.baseUrl}${ApiConstants.getBottlesEndpoint}?exists%5BemptyAt%5D=false$cellarIsActive'),
+            '${ApiConstants.baseUrl}${ApiConstants.bottlesEndpoint}?exists%5BemptyAt%5D=false$cellarIsActive'),
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
@@ -62,7 +62,7 @@ class ApiService {
     }
 
     debugPrint(
-        '${ApiConstants.baseUrl}${ApiConstants.getBottlesLikedEndpoint}$cellarIsActive');
+        'GET ${ApiConstants.baseUrl}${ApiConstants.getBottlesLikedEndpoint}$cellarIsActive');
 
     Response response = await get(
         Uri.parse(
@@ -86,12 +86,12 @@ class ApiService {
     Map body = {'isLiked': value};
 
     debugPrint(
-        '${ApiConstants.baseUrl}${ApiConstants.getBottlesEndpoint}/$bottleId');
+        'PUT ${ApiConstants.baseUrl}${ApiConstants.bottlesEndpoint}/$bottleId');
     debugPrint(json.encode(body));
 
     put(
         Uri.parse(
-            '${ApiConstants.baseUrl}${ApiConstants.getBottlesEndpoint}/$bottleId'),
+            '${ApiConstants.baseUrl}${ApiConstants.bottlesEndpoint}/$bottleId'),
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
@@ -105,14 +105,30 @@ class ApiService {
     Map body = {'isActive': value};
 
     debugPrint(
-        '${ApiConstants.baseUrl}${ApiConstants.getCellarsEndpoint}/$cellarId');
+        'PUT ${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}/$cellarId');
     debugPrint(json.encode(body));
 
     globals.cellarActiveId = cellarId;
 
     put(
         Uri.parse(
-            '${ApiConstants.baseUrl}${ApiConstants.getCellarsEndpoint}/$cellarId'),
+            '${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}/$cellarId'),
+        headers: {
+          'Content-Type': 'application/ld+json',
+          'Accept': 'application/ld+json',
+          'Authorization':
+              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjExNzU2MTEsImV4cCI6MTY2MTc4MDQxMSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.5c_DnXJ4sm0ZvBjqBGBOGKwVFo1cXlPmJZvg4YIfrKt3wXHLd-Z4Gy8Qju-2r-fMbn6DpsUONVDp8dK2gQk1cRfojzZnu7_Y4_zki0VNFii89lXHebKKHeRZxILNxPGxxndREA_AIJg2Ybk3b9iKL2bbXv3adHQ0bMXEmzPf50S7AJ_Hj03zqmal7cO18tFattpuBQUm2X-70-J_pKkaRu69DfBQR7wAlg6DX5aZRl6S2jGtDXlmpAHMk5W8GjepOJkV_3SnNi4PiK4rKqSnurrLd5cuA1UNhJwx1rkQg7_80Ote8zSEfE2dYZUXLeW9GqpFQrqkUte5RJSCRAFHBA'
+        },
+        body: json.encode(body));
+  }
+
+  void postCellar(String name, int column, int row) async {
+    Map body = {'name': name, 'row': row, 'clmn': column, 'isActive': false};
+
+    debugPrint('POST ${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}');
+    debugPrint(json.encode(body));
+
+    post(Uri.parse('${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}'),
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',

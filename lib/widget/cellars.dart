@@ -1,10 +1,10 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine_app/api_service.dart';
 import 'package:wine_app/globals.dart' as globals;
 import 'package:wine_app/main.dart';
 import 'package:wine_app/model/get_cellars.dart';
-import 'package:wine_app/extension/on_validate.dart';
 
 class CellarsPage extends StatelessWidget {
   const CellarsPage({Key? key}) : super(key: key);
@@ -97,112 +97,117 @@ class CreateCellarSectionState extends State<CreateCellarSection> {
     super.initState();
   }
 
+  final formKey = GlobalKey<FormState>();
+  TextEditingController nameController = TextEditingController();
+  double _currentSliderRowValue = 10;
+  double _currentSliderColumnValue = 10;
+
   @override
   Widget build(BuildContext context) {
-    final formKey = GlobalKey<FormState>();
-    TextEditingController nameController = TextEditingController();
-    double currentSliderColumnValue = 10;
-    double currentSliderRowValue = 10;
-
     return Scaffold(
         backgroundColor: Colors.white,
         body: SingleChildScrollView(
-          child: Column(
-            children: [
-              Form(
-                  key: formKey,
-                  child: Column(children: [
-                    Padding(
-                        padding:
-                            const EdgeInsets.only(left: 20, right: 20, top: 50),
-                        child: TextFormField(
-                          controller: nameController,
-                          validator: (value) {
-                            if (value == null || value.isEmpty) {
-                              return 'Veuillez saisir un nom pour votre cave à vin';
-                            }
-                            return null;
-                          },
-                          decoration: const InputDecoration(
-                              border: OutlineInputBorder(),
-                              labelText: 'Cave à vin Perso',
-                              hintText:
-                                  'Enter valid email id as abc@gmail.com'),
-                        )),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 40),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 20, right: 20),
-                                child: Text(
-                                  'Nombres de lignes',
-                                  textAlign: TextAlign.left,
-                                  style: GoogleFonts.nunito(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                )),
-                            Slider(
-                              value: currentSliderRowValue,
-                              max: 100,
-                              divisions: 1,
-                              label: currentSliderRowValue.round().toString(),
-                              onChanged: (double value) {
-                                setState(() {
-                                  currentSliderRowValue = value;
-                                });
-                              },
-                            )
-                          ],
-                        )),
-                    Padding(
-                        padding: const EdgeInsets.only(top: 40),
-                        child: Column(
-                          crossAxisAlignment: CrossAxisAlignment.start,
-                          children: [
-                            Padding(
-                                padding:
-                                    const EdgeInsets.only(left: 20, right: 20),
-                                child: Text(
-                                  'Nombres de colonnes',
-                                  textAlign: TextAlign.left,
-                                  style: GoogleFonts.nunito(
-                                    color: Colors.black,
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.w400,
-                                  ),
-                                )),
-                            Slider(
-                              value: currentSliderColumnValue,
-                              max: 100,
-                              divisions: 1,
-                              label:
-                                  currentSliderColumnValue.round().toString(),
-                              onChanged: (double value) {
-                                setState(() {
-                                  currentSliderColumnValue = value;
-                                });
-                              },
-                            )
-                          ],
-                        )),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 20),
-                      child: ElevatedButton(
-                        onPressed: () {
-                          if (formKey.currentState!.validate()) {}
-                        },
-                        child: const Text('Création'),
-                      ),
-                    )
-                  ])),
-            ],
-          ),
-        ));
+            child: Column(children: [
+          Form(
+              key: formKey,
+              child: Column(children: [
+                Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 50),
+                    child: TextFormField(
+                      controller: nameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez saisir un nom pour votre cave à vin';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Cave à vin Perso'),
+                    )),
+                Padding(
+                    padding:
+                        const EdgeInsets.only(top: 40, left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Nombres de lignes : ${_currentSliderRowValue.round()}',
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.nunito(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.maxFinite - 100,
+                          child: CupertinoSlider(
+                            activeColor: Colors.redAccent,
+                            value: _currentSliderRowValue,
+                            max: 100,
+                            divisions: 100,
+                            onChanged: (double value) {
+                              setState(() {
+                                _currentSliderRowValue = value;
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    )),
+                Padding(
+                    padding:
+                        const EdgeInsets.only(top: 40, left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Nombres de Colonnes : ${_currentSliderColumnValue.round()}',
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.nunito(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.maxFinite - 100,
+                          child: CupertinoSlider(
+                            activeColor: Colors.redAccent,
+                            value: _currentSliderColumnValue,
+                            max: 100,
+                            divisions: 100,
+                            onChanged: (double value) {
+                              setState(() {
+                                _currentSliderColumnValue = value;
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.redAccent,
+                      minimumSize: const Size.fromHeight(50), // NEW
+                    ),
+                    onPressed: () {
+                      if (formKey.currentState!.validate()) {
+                        ApiService().postCellar(
+                            nameController.text.toString(),
+                            _currentSliderColumnValue.round(),
+                            _currentSliderRowValue.round());
+                      }
+                    },
+                    child: const Text('Création'),
+                  ),
+                )
+              ]))
+        ])));
   }
 }
 
