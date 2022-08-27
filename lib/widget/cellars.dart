@@ -92,14 +92,26 @@ class CellarsSectionState extends State<CellarsSection> {
   }
 }
 
-class CellarsCard extends StatelessWidget {
+class CellarsCard extends StatefulWidget {
   final HydraMember cellar;
 
   const CellarsCard({Key? key, required this.cellar}) : super(key: key);
 
   @override
+  State<CellarsCard> createState() => CellarsCardState();
+}
+
+class CellarsCardState extends State<CellarsCard> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    HydraMember cellar = widget.cellar;
     Color cellarColor = Colors.grey.shade200;
+
     if (cellar.isActive) {
       cellarColor = Colors.greenAccent;
     }
@@ -107,10 +119,12 @@ class CellarsCard extends StatelessWidget {
     return Container(
         padding: const EdgeInsets.all(10),
         child: MaterialButton(
-            onPressed: () {
-              ApiService().putCellarsActive(cellar.id, !cellar.isActive);
-              Navigator.push(
-                  context, MaterialPageRoute(builder: (_) => const HomePage()));
+            onPressed: () async {
+              if (!cellar.isActive) {
+                ApiService().putCellarsActive(cellar.id, true);
+                Navigator.push(context,
+                    MaterialPageRoute(builder: (_) => const HomePage()));
+              }
             },
             padding: const EdgeInsets.all(0),
             child: Container(

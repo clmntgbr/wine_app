@@ -5,6 +5,7 @@ import 'package:http/http.dart';
 import 'package:wine_app/model/get_bottles.dart';
 import 'constants.dart';
 import 'model/get_cellars.dart';
+import 'globals.dart' as globals;
 
 class ApiService {
   Future<Cellars> getCellars() async {
@@ -31,9 +32,14 @@ class ApiService {
   Future<Bottles> getBottles() async {
     debugPrint('getBottles');
 
+    String cellarIsActive = '&cellar.isActive=true';
+    if (globals.cellarActiveId != 0) {
+      cellarIsActive = '&cellar.id=${globals.cellarActiveId}';
+    }
+
     Response response = await get(
         Uri.parse(
-            '${ApiConstants.baseUrl}${ApiConstants.getBottlesEndpoint}?exists%5BemptyAt%5D=false'),
+            '${ApiConstants.baseUrl}${ApiConstants.getBottlesEndpoint}?exists%5BemptyAt%5D=false$cellarIsActive'),
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
@@ -53,8 +59,14 @@ class ApiService {
   Future<Bottles> getBottlesLiked() async {
     debugPrint('getBottlesLiked');
 
+    String cellarIsActive = '&cellar.isActive=true';
+    if (globals.cellarActiveId != 0) {
+      cellarIsActive = '&cellar.id=${globals.cellarActiveId}';
+    }
+
     Response response = await get(
-        Uri.parse(ApiConstants.baseUrl + ApiConstants.getBottlesLikedEndpoint),
+        Uri.parse(
+            '${ApiConstants.baseUrl}${ApiConstants.getBottlesLikedEndpoint}$cellarIsActive'),
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
@@ -94,6 +106,8 @@ class ApiService {
     debugPrint('$value');
 
     Map body = {'isActive': value};
+
+    globals.cellarActiveId = cellarId;
 
     put(
         Uri.parse(
