@@ -35,21 +35,22 @@ class Cellars {
 class HydraMember {
   String contextId;
   int id;
-  String? name;
+  String name;
   bool isActive;
   int row;
   int column;
+  int bottlesInCellar;
 
-  HydraMember(
-      this.contextId, this.id, this.name, this.isActive, this.row, this.column);
+  HydraMember(this.contextId, this.id, this.name, this.isActive, this.row,
+      this.column, this.bottlesInCellar);
 
   factory HydraMember.fromJson(dynamic json) {
     return HydraMember(json['@id'], json['id'], json['name'], json['isActive'],
-        json['row'], json['clmn']);
+        json['row'], json['clmn'], json['bottlesInCellar']);
   }
 
   @override
   String toString() {
-    return '{@id: $contextId, id: $id, name: $name, isActive: $isActive, row: $row, column: $column}';
+    return '{@id: $contextId, id: $id, name: $name, isActive: $isActive, row: $row, column: $column, bottlesInCellar: $bottlesInCellar}';
   }
 }

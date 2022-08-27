@@ -1,14 +1,18 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine_app/api_service.dart';
+import 'package:wine_app/globals.dart' as globals;
 import 'package:wine_app/main.dart';
 import 'package:wine_app/model/get_cellars.dart';
+import 'package:wine_app/extension/on_validate.dart';
 
 class CellarsPage extends StatelessWidget {
   const CellarsPage({Key? key}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    globals.cellarActiveId = 0;
+
     return Scaffold(
         body: const CellarsSection(),
         appBar: PreferredSize(
@@ -34,7 +38,170 @@ class CellarsPage extends StatelessWidget {
                   Navigator.push(context,
                       MaterialPageRoute(builder: (_) => const HomePage()));
                 },
+              ),
+              actions: [
+                IconButton(
+                    onPressed: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (_) => const CreateCellarPage()));
+                    },
+                    icon: Icon(
+                      Icons.add_circle_outline,
+                      color: Colors.grey[800],
+                      size: 20,
+                    ))
+              ]),
+        ));
+  }
+}
+
+class CreateCellarPage extends StatelessWidget {
+  const CreateCellarPage({Key? key}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: const CreateCellarSection(),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50.0),
+          child: AppBar(
+              elevation: 0,
+              backgroundColor: Colors.white,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const CellarsPage()));
+                },
               )),
+        ));
+  }
+}
+
+class CreateCellarSection extends StatefulWidget {
+  const CreateCellarSection({Key? key}) : super(key: key);
+
+  @override
+  State<CreateCellarSection> createState() => CreateCellarSectionState();
+}
+
+class CreateCellarSectionState extends State<CreateCellarSection> {
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    final formKey = GlobalKey<FormState>();
+    TextEditingController nameController = TextEditingController();
+    double currentSliderColumnValue = 10;
+    double currentSliderRowValue = 10;
+
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+          child: Column(
+            children: [
+              Form(
+                  key: formKey,
+                  child: Column(children: [
+                    Padding(
+                        padding:
+                            const EdgeInsets.only(left: 20, right: 20, top: 50),
+                        child: TextFormField(
+                          controller: nameController,
+                          validator: (value) {
+                            if (value == null || value.isEmpty) {
+                              return 'Veuillez saisir un nom pour votre cave à vin';
+                            }
+                            return null;
+                          },
+                          decoration: const InputDecoration(
+                              border: OutlineInputBorder(),
+                              labelText: 'Cave à vin Perso',
+                              hintText:
+                                  'Enter valid email id as abc@gmail.com'),
+                        )),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 40),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
+                                child: Text(
+                                  'Nombres de lignes',
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.nunito(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )),
+                            Slider(
+                              value: currentSliderRowValue,
+                              max: 100,
+                              divisions: 1,
+                              label: currentSliderRowValue.round().toString(),
+                              onChanged: (double value) {
+                                setState(() {
+                                  currentSliderRowValue = value;
+                                });
+                              },
+                            )
+                          ],
+                        )),
+                    Padding(
+                        padding: const EdgeInsets.only(top: 40),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          children: [
+                            Padding(
+                                padding:
+                                    const EdgeInsets.only(left: 20, right: 20),
+                                child: Text(
+                                  'Nombres de colonnes',
+                                  textAlign: TextAlign.left,
+                                  style: GoogleFonts.nunito(
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                )),
+                            Slider(
+                              value: currentSliderColumnValue,
+                              max: 100,
+                              divisions: 1,
+                              label:
+                                  currentSliderColumnValue.round().toString(),
+                              onChanged: (double value) {
+                                setState(() {
+                                  currentSliderColumnValue = value;
+                                });
+                              },
+                            )
+                          ],
+                        )),
+                    Padding(
+                      padding: const EdgeInsets.symmetric(vertical: 20),
+                      child: ElevatedButton(
+                        onPressed: () {
+                          if (formKey.currentState!.validate()) {}
+                        },
+                        child: const Text('Création'),
+                      ),
+                    )
+                  ])),
+            ],
+          ),
         ));
   }
 }
@@ -154,14 +321,17 @@ class CellarsCardState extends State<CellarsCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'id: ${cellar.id}',
+                          globals.splitString(cellar.name),
+                          maxLines: 1,
                           style: GoogleFonts.nunito(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
                         Text(
-                          '400e',
+                          '${cellar.bottlesInCellar}',
+                          textAlign: TextAlign.center,
+                          maxLines: 1,
                           style: GoogleFonts.nunito(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
@@ -176,31 +346,15 @@ class CellarsCardState extends State<CellarsCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'wembley, London',
+                          'Lignes: ${cellar.row} - Colonnes: ${cellar.column}',
                           style: GoogleFonts.nunito(
                             fontSize: 14,
                             color: Colors.grey[500],
                             fontWeight: FontWeight.w400,
                           ),
                         ),
-                        Row(
-                          children: [
-                            const Icon(
-                              Icons.place,
-                              size: 14.0,
-                            ),
-                            Text(
-                              '2 km to city',
-                              style: GoogleFonts.nunito(
-                                fontSize: 14,
-                                color: Colors.grey[500],
-                                fontWeight: FontWeight.w400,
-                              ),
-                            ),
-                          ],
-                        ),
                         Text(
-                          'per night',
+                          'bouteilles',
                           style: GoogleFonts.nunito(
                             fontSize: 14,
                             color: Colors.grey.shade800,
@@ -210,45 +364,18 @@ class CellarsCardState extends State<CellarsCard> {
                       ],
                     ),
                   ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 3, 10, 0),
-                    child: Row(
-                      children: [
-                        Row(
-                          children: const [
-                            Icon(
-                              Icons.star_rate,
-                              size: 14.0,
-                            ),
-                            Icon(
-                              Icons.star_rate,
-                              size: 14.0,
-                            ),
-                            Icon(
-                              Icons.star_rate,
-                              size: 14.0,
-                            ),
-                            Icon(
-                              Icons.star_rate,
-                              size: 14.0,
-                            ),
-                            Icon(
-                              Icons.star_border,
-                              size: 14.0,
-                            ),
-                          ],
+                  Row(
+                    children: [
+                      const SizedBox(width: 10),
+                      Text(
+                        'Place(s) restante(s): ${(cellar.row * cellar.column) - cellar.bottlesInCellar}',
+                        style: GoogleFonts.nunito(
+                          fontSize: 14,
+                          color: Colors.grey[500],
+                          fontWeight: FontWeight.w400,
                         ),
-                        const SizedBox(width: 20),
-                        Text(
-                          '42 reviews',
-                          style: GoogleFonts.nunito(
-                            fontSize: 14,
-                            color: Colors.grey[500],
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ],
               ),

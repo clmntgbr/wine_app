@@ -49,7 +49,6 @@ class ApiService {
 
     if (response.statusCode == 200) {
       Bottles model = bottlesFromJson(response.body.toString());
-      debugPrint(model.toString());
       return model;
     }
 
