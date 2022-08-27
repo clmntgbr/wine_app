@@ -230,37 +230,37 @@ class CellarsSectionState extends State<CellarsSection> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      width: MediaQuery.of(context).size.width,
-      padding: const EdgeInsets.all(10),
-      color: Colors.white,
-      child: Column(
-        children: [
-          Column(children: [
-            FutureBuilder<Cellars>(
-              future: cellars,
-              builder: (context, snapshot) {
-                List<Widget> children = [];
-                if (snapshot.hasData) {
-                  for (HydraMember cellar in snapshot.data!.hydraMember) {
-                    children.add(CellarsCard(cellar: cellar));
+        width: MediaQuery.of(context).size.width,
+        padding: const EdgeInsets.all(10),
+        color: Colors.white,
+        child: SingleChildScrollView(
+            child: Column(
+          children: [
+            Column(children: [
+              FutureBuilder<Cellars>(
+                future: cellars,
+                builder: (context, snapshot) {
+                  List<Widget> children = [];
+                  if (snapshot.hasData) {
+                    for (HydraMember cellar in snapshot.data!.hydraMember) {
+                      children.add(CellarsCard(cellar: cellar));
+                    }
+                    return Column(children: children);
                   }
-                  return Column(children: children);
-                }
-                return Container(
-                    padding: const EdgeInsets.all(50),
-                    child: const SizedBox(
-                      height: 100.0,
-                      width: 100.0,
-                      child: CircularProgressIndicator(
-                        backgroundColor: Colors.redAccent,
-                      ),
-                    ));
-              },
-            )
-          ]),
-        ],
-      ),
-    );
+                  return Container(
+                      padding: const EdgeInsets.all(50),
+                      child: const SizedBox(
+                        height: 100.0,
+                        width: 100.0,
+                        child: CircularProgressIndicator(
+                          backgroundColor: Colors.redAccent,
+                        ),
+                      ));
+                },
+              )
+            ]),
+          ],
+        )));
   }
 }
 
