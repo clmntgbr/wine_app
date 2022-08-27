@@ -8,10 +8,11 @@ class Bottles {
   String id;
   String type;
   List<dynamic> hydraMember;
+  int totalItems;
 
   @override
   String toString() {
-    return '{context: $context, id: $id, type: $type, hydraMember: $hydraMember}';
+    return '{context: $context, id: $id, type: $type, totalItems: $totalItems}';
   }
 
   Bottles({
@@ -19,6 +20,7 @@ class Bottles {
     required this.id,
     required this.type,
     required this.hydraMember,
+    required this.totalItems,
   });
 
   factory Bottles.fromJson(Map<String, dynamic> json) {
@@ -29,6 +31,7 @@ class Bottles {
       hydraMember: json['hydra:member']
           .map((tagJson) => HydraMember.fromJson(tagJson))
           .toList(),
+      totalItems: json['hydra:totalItems'],
     );
   }
 }

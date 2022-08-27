@@ -9,7 +9,7 @@ import 'globals.dart' as globals;
 
 class ApiService {
   Future<Cellars> getCellars() async {
-    debugPrint('getCellars');
+    debugPrint(ApiConstants.baseUrl + ApiConstants.getCellarsEndpoint);
 
     Response response = await get(
         Uri.parse(ApiConstants.baseUrl + ApiConstants.getCellarsEndpoint),
@@ -22,7 +22,6 @@ class ApiService {
 
     if (response.statusCode == 200) {
       Cellars model = cellarsFromJson(response.body.toString());
-      debugPrint(model.toString());
       return model;
     }
 
@@ -30,12 +29,13 @@ class ApiService {
   }
 
   Future<Bottles> getBottles() async {
-    debugPrint('getBottles');
-
     String cellarIsActive = '&cellar.isActive=true';
     if (globals.cellarActiveId != 0) {
       cellarIsActive = '&cellar.id=${globals.cellarActiveId}';
     }
+
+    debugPrint(
+        '${ApiConstants.baseUrl}${ApiConstants.getBottlesEndpoint}?exists%5BemptyAt%5D=false$cellarIsActive');
 
     Response response = await get(
         Uri.parse(
@@ -57,12 +57,13 @@ class ApiService {
   }
 
   Future<Bottles> getBottlesLiked() async {
-    debugPrint('getBottlesLiked');
-
     String cellarIsActive = '&cellar.isActive=true';
     if (globals.cellarActiveId != 0) {
       cellarIsActive = '&cellar.id=${globals.cellarActiveId}';
     }
+
+    debugPrint(
+        '${ApiConstants.baseUrl}${ApiConstants.getBottlesLikedEndpoint}$cellarIsActive');
 
     Response response = await get(
         Uri.parse(
@@ -76,7 +77,6 @@ class ApiService {
 
     if (response.statusCode == 200) {
       Bottles model = bottlesFromJson(response.body.toString());
-      debugPrint(model.toString());
       return model;
     }
 
@@ -84,10 +84,11 @@ class ApiService {
   }
 
   void putBottlesLiked(int bottleId, bool value) async {
-    debugPrint('putBottlesLiked');
-    debugPrint('$value');
-
     Map body = {'isLiked': value};
+
+    debugPrint(
+        '${ApiConstants.baseUrl}${ApiConstants.getBottlesEndpoint}/$bottleId');
+    debugPrint(json.encode(body));
 
     put(
         Uri.parse(
@@ -102,10 +103,11 @@ class ApiService {
   }
 
   void putCellarsActive(int cellarId, bool value) async {
-    debugPrint('putCellarsActive');
-    debugPrint('$value');
-
     Map body = {'isActive': value};
+
+    debugPrint(
+        '${ApiConstants.baseUrl}${ApiConstants.getCellarsEndpoint}/$cellarId');
+    debugPrint(json.encode(body));
 
     globals.cellarActiveId = cellarId;
 

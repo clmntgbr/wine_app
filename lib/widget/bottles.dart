@@ -32,8 +32,8 @@ class BottlesSectionState extends State<BottlesSection> {
               builder: (context, snapshot) {
                 List<Widget> children = [];
                 if (snapshot.hasData) {
-                  children.add(
-                      BottlesFilter(length: snapshot.data!.hydraMember.length));
+                  children
+                      .add(BottlesFilter(length: snapshot.data!.totalItems));
                   for (HydraMember bottle in snapshot.data!.hydraMember) {
                     children.add(BottlesCard(bottle: bottle));
                   }
@@ -71,7 +71,7 @@ class BottlesFilter extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [
           Text(
-            '$length bottles founds',
+            '$length bouteille(s) trouvée(s)',
             style: GoogleFonts.nunito(
               color: Colors.black,
               fontSize: 15,
@@ -80,7 +80,7 @@ class BottlesFilter extends StatelessWidget {
           Row(
             children: [
               Text(
-                'Filters',
+                'Filtres',
                 style: GoogleFonts.nunito(
                   color: Colors.black,
                   fontSize: 15,
