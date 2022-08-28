@@ -5,6 +5,7 @@ import 'package:wine_app/api_service.dart';
 import 'package:wine_app/globals.dart' as globals;
 import 'package:wine_app/main.dart';
 import 'package:wine_app/model/get_cellars.dart';
+import 'dart:io';
 
 class CellarsPage extends StatelessWidget {
   const CellarsPage({Key? key}) : super(key: key);
@@ -92,6 +93,7 @@ class CreateCellarSection extends StatefulWidget {
 }
 
 class CreateCellarSectionState extends State<CreateCellarSection> {
+  bool isCallApi = true;
   @override
   void initState() {
     super.initState();
@@ -101,6 +103,8 @@ class CreateCellarSectionState extends State<CreateCellarSection> {
   TextEditingController nameController = TextEditingController();
   double _currentSliderRowValue = 10;
   double _currentSliderColumnValue = 10;
+
+  Widget createButton = const Text('Création');
 
   @override
   Widget build(BuildContext context) {
@@ -196,14 +200,26 @@ class CreateCellarSectionState extends State<CreateCellarSection> {
                       minimumSize: const Size.fromHeight(50), // NEW
                     ),
                     onPressed: () {
-                      if (formKey.currentState!.validate()) {
-                        ApiService().postCellar(
-                            nameController.text.toString(),
-                            _currentSliderColumnValue.round(),
-                            _currentSliderRowValue.round());
+                      if (isCallApi && formKey.currentState!.validate()) {
+                        isCallApi = false;
+                        setState(() {
+                          createButton = const CircularProgressIndicator(
+                            backgroundColor: Colors.white,
+                          );
+                          ApiService().postCellar(
+                              nameController.text.toString(),
+                              _currentSliderColumnValue.round(),
+                              _currentSliderRowValue.round());
+                          Future.delayed(const Duration(seconds: 4)).then((_) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const CellarsPage()));
+                          });
+                        });
                       }
                     },
-                    child: const Text('Création'),
+                    child: createButton,
                   ),
                 )
               ]))
@@ -301,7 +317,7 @@ class CellarsCardState extends State<CellarsCard> {
             padding: const EdgeInsets.all(0),
             child: Container(
               margin: const EdgeInsets.all(0),
-              height: 90,
+              height: 150,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -379,7 +395,7 @@ class CellarsCardState extends State<CellarsCard> {
                           color: Colors.grey[500],
                           fontWeight: FontWeight.w400,
                         ),
-                      ),
+                      )
                     ],
                   ),
                 ],
