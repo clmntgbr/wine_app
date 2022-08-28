@@ -402,7 +402,7 @@ class UpdateCellarSectionState extends State<UpdateCellarSection> {
                         setState(() {
                           deleteButton = const CircularProgressIndicator(
                             valueColor:
-                                AlwaysStoppedAnimation<Color>(Colors.white),
+                                AlwaysStoppedAnimation<Color>(Colors.redAccent),
                           );
                           ApiService().deleteCellar(cellarId);
                           Future.delayed(const Duration(seconds: 5)).then((_) {
