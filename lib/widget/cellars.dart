@@ -104,7 +104,7 @@ class CreateCellarSectionState extends State<CreateCellarSection> {
   double _currentSliderRowValue = 10;
   double _currentSliderColumnValue = 10;
 
-  Widget createButton = const Text('Création');
+  Widget createButton = const Text('Créer');
 
   @override
   Widget build(BuildContext context) {
@@ -211,7 +211,7 @@ class CreateCellarSectionState extends State<CreateCellarSection> {
                               nameController.text.toString(),
                               _currentSliderColumnValue.round(),
                               _currentSliderRowValue.round());
-                          Future.delayed(const Duration(seconds: 4)).then((_) {
+                          Future.delayed(const Duration(seconds: 6)).then((_) {
                             Navigator.push(
                                 context,
                                 MaterialPageRoute(
@@ -221,6 +221,214 @@ class CreateCellarSectionState extends State<CreateCellarSection> {
                       }
                     },
                     child: createButton,
+                  ),
+                )
+              ]))
+        ])));
+  }
+}
+
+class UpdateCellarPage extends StatelessWidget {
+  final int id;
+  final String name;
+  final int rowSliderValue;
+  final int columnSliderValue;
+
+  const UpdateCellarPage(
+      {Key? key,
+      required this.id,
+      required this.name,
+      required this.rowSliderValue,
+      required this.columnSliderValue})
+      : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+        body: UpdateCellarSection(
+            name: name,
+            id: id,
+            rowSliderValue: rowSliderValue,
+            columnSliderValue: columnSliderValue),
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(50.0),
+          child: AppBar(
+              elevation: 0,
+              backgroundColor: Colors.white,
+              leading: IconButton(
+                icon: const Icon(
+                  Icons.arrow_back_ios,
+                  color: Colors.grey,
+                  size: 20,
+                ),
+                onPressed: () {
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (_) => const CellarsPage()));
+                },
+              )),
+        ));
+  }
+}
+
+class UpdateCellarSection extends StatefulWidget {
+  final int id;
+  final String name;
+  final int rowSliderValue;
+  final int columnSliderValue;
+
+  const UpdateCellarSection(
+      {Key? key,
+      required this.id,
+      required this.name,
+      required this.rowSliderValue,
+      required this.columnSliderValue})
+      : super(key: key);
+
+  @override
+  State<UpdateCellarSection> createState() => UpdateCellarSectionState();
+}
+
+class UpdateCellarSectionState extends State<UpdateCellarSection> {
+  bool isCallApi = true;
+  bool isInit = false;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  final formKey = GlobalKey<FormState>();
+  double _currentSliderRowValue = 10;
+  double _currentSliderColumnValue = 10;
+  TextEditingController nameController = TextEditingController();
+
+  Widget updateButton = const Text('Modifier');
+
+  @override
+  Widget build(BuildContext context) {
+    int cellarId = widget.id;
+
+    if (!isInit) {
+      _currentSliderRowValue = widget.rowSliderValue.toDouble();
+      _currentSliderColumnValue = widget.columnSliderValue.toDouble();
+      nameController = TextEditingController(text: widget.name);
+    }
+
+    return Scaffold(
+        backgroundColor: Colors.white,
+        body: SingleChildScrollView(
+            child: Column(children: [
+          Form(
+              key: formKey,
+              child: Column(children: [
+                Padding(
+                    padding:
+                        const EdgeInsets.only(left: 20, right: 20, top: 50),
+                    child: TextFormField(
+                      controller: nameController,
+                      validator: (value) {
+                        if (value == null || value.isEmpty) {
+                          return 'Veuillez saisir un nom pour votre cave à vin';
+                        }
+                        return null;
+                      },
+                      decoration: const InputDecoration(
+                          border: OutlineInputBorder(),
+                          labelText: 'Cave à vin Perso'),
+                    )),
+                Padding(
+                    padding:
+                        const EdgeInsets.only(top: 40, left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Nombres de lignes : ${_currentSliderRowValue.round()}',
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.nunito(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.maxFinite - 100,
+                          child: CupertinoSlider(
+                            activeColor: Colors.redAccent,
+                            value: _currentSliderRowValue,
+                            max: 100,
+                            divisions: 100,
+                            onChanged: (double value) {
+                              setState(() {
+                                isInit = true;
+                                _currentSliderRowValue = value;
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    )),
+                Padding(
+                    padding:
+                        const EdgeInsets.only(top: 40, left: 20, right: 20),
+                    child: Column(
+                      crossAxisAlignment: CrossAxisAlignment.start,
+                      children: [
+                        Text(
+                          'Nombres de Colonnes : ${_currentSliderColumnValue.round()}',
+                          textAlign: TextAlign.left,
+                          style: GoogleFonts.nunito(
+                            color: Colors.black,
+                            fontSize: 18,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        SizedBox(
+                          width: double.maxFinite - 100,
+                          child: CupertinoSlider(
+                            activeColor: Colors.redAccent,
+                            value: _currentSliderColumnValue,
+                            max: 100,
+                            divisions: 100,
+                            onChanged: (double value) {
+                              setState(() {
+                                isInit = true;
+                                _currentSliderColumnValue = value;
+                              });
+                            },
+                          ),
+                        )
+                      ],
+                    )),
+                Padding(
+                  padding: const EdgeInsets.only(left: 20, right: 20, top: 50),
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.redAccent,
+                      minimumSize: const Size.fromHeight(50), // NEW
+                    ),
+                    onPressed: () {
+                      if (isCallApi && formKey.currentState!.validate()) {
+                        isCallApi = false;
+                        setState(() {
+                          updateButton = const CircularProgressIndicator(
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
+                          );
+                          ApiService().putCellar(
+                              cellarId,
+                              nameController.text.toString(),
+                              _currentSliderColumnValue.round(),
+                              _currentSliderRowValue.round());
+                          Future.delayed(const Duration(seconds: 6)).then((_) {
+                            Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                    builder: (_) => const CellarsPage()));
+                          });
+                        });
+                      }
+                    },
+                    child: updateButton,
                   ),
                 )
               ]))
@@ -318,7 +526,7 @@ class CellarsCardState extends State<CellarsCard> {
             padding: const EdgeInsets.all(0),
             child: Container(
               margin: const EdgeInsets.all(0),
-              height: 150,
+              height: 110,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -337,17 +545,47 @@ class CellarsCardState extends State<CellarsCard> {
               ),
               child: Column(
                 children: [
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Text(
-                          globals.splitString(cellar.name),
+                  Row(
+                    children: [
+                      SizedBox(
+                          width: 50,
+                          child: MaterialButton(
+                            shape: const CircleBorder(),
+                            onPressed: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => UpdateCellarPage(
+                                          id: cellar.id,
+                                          name: cellar.name,
+                                          rowSliderValue: cellar.row,
+                                          columnSliderValue: cellar.column)));
+                            },
+                            child: const Icon(
+                              Icons.mode_edit,
+                              color: Colors.grey,
+                              size: 20,
+                            ),
+                          )),
+                      Text(globals.splitString(cellar.name),
                           maxLines: 1,
                           style: GoogleFonts.nunito(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
+                          ))
+                    ],
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'Lignes: ${cellar.row} - Colonnes: ${cellar.column}',
+                          style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            color: Colors.grey[500],
+                            fontWeight: FontWeight.w400,
                           ),
                         ),
                         Text(
@@ -368,7 +606,7 @@ class CellarsCardState extends State<CellarsCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'Lignes: ${cellar.row} - Colonnes: ${cellar.column}',
+                          'Place(s) restante(s): ${(cellar.row * cellar.column) - cellar.bottlesInCellar}',
                           style: GoogleFonts.nunito(
                             fontSize: 14,
                             color: Colors.grey[500],
@@ -385,20 +623,7 @@ class CellarsCardState extends State<CellarsCard> {
                         ),
                       ],
                     ),
-                  ),
-                  Row(
-                    children: [
-                      const SizedBox(width: 10),
-                      Text(
-                        'Place(s) restante(s): ${(cellar.row * cellar.column) - cellar.bottlesInCellar}',
-                        style: GoogleFonts.nunito(
-                          fontSize: 14,
-                          color: Colors.grey[500],
-                          fontWeight: FontWeight.w400,
-                        ),
-                      )
-                    ],
-                  ),
+                  )
                 ],
               ),
             )));

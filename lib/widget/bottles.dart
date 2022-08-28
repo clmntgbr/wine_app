@@ -65,6 +65,27 @@ class BottlesFilter extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    Widget filter = Container();
+    if (length > 0) {
+      filter = Row(
+        children: [
+          Text(
+            'Filtres',
+            style: GoogleFonts.nunito(
+              color: Colors.black,
+              fontSize: 15,
+            ),
+          ),
+          const IconButton(
+            icon: Icon(
+              Icons.filter_list_outlined,
+              size: 25,
+            ),
+            onPressed: null,
+          )
+        ],
+      );
+    }
     return SizedBox(
       width: MediaQuery.of(context).size.width - 40,
       height: 50,
@@ -78,24 +99,7 @@ class BottlesFilter extends StatelessWidget {
               fontSize: 15,
             ),
           ),
-          Row(
-            children: [
-              Text(
-                'Filtres',
-                style: GoogleFonts.nunito(
-                  color: Colors.black,
-                  fontSize: 15,
-                ),
-              ),
-              const IconButton(
-                icon: Icon(
-                  Icons.filter_list_outlined,
-                  size: 25,
-                ),
-                onPressed: null,
-              )
-            ],
-          )
+          filter
         ],
       ),
     );
