@@ -131,165 +131,171 @@ class BottlesCardState extends State<BottlesCard> {
     }
 
     return Container(
-      margin: const EdgeInsets.all(10),
-      height: 230,
-      width: double.infinity,
-      decoration: BoxDecoration(
-        color: Colors.white,
-        borderRadius: const BorderRadius.all(
-          Radius.circular(18),
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.shade200,
-            spreadRadius: 4,
-            blurRadius: 6,
-            offset: const Offset(0, 3),
-          ),
-        ],
-      ),
-      child: Column(
-        children: [
-          Container(
-            height: 140,
-            decoration: const BoxDecoration(
-              borderRadius: BorderRadius.only(
-                topLeft: Radius.circular(18),
-                topRight: Radius.circular(18),
+        padding: const EdgeInsets.all(10),
+        child: MaterialButton(
+            onPressed: () async {},
+            padding: const EdgeInsets.all(0),
+            child: Container(
+              margin: const EdgeInsets.all(0),
+              height: 230,
+              width: double.infinity,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: const BorderRadius.all(
+                  Radius.circular(18),
+                ),
+                boxShadow: [
+                  BoxShadow(
+                    color: Colors.grey.shade200,
+                    spreadRadius: 4,
+                    blurRadius: 6,
+                    offset: const Offset(0, 3),
+                  ),
+                ],
               ),
-              image: DecorationImage(
-                image: AssetImage(
-                  'assets/images/hotel_1.png',
-                ),
-                fit: BoxFit.cover,
-              ),
-            ),
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 5,
-                  right: -15,
-                  child: MaterialButton(
-                    color: buttonColor,
-                    shape: const CircleBorder(),
-                    onPressed: () {
-                      ApiService().putBottlesLiked(bottle.id, !bottle.isLiked);
-                      bottle.isLiked = !bottle.isLiked;
-                      setState(() {});
-                    },
-                    child: const Icon(
-                      Icons.favorite_outline_rounded,
-                      size: 20,
-                    ),
-                  ),
-                )
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'id: ${bottle.id}',
-                  style: GoogleFonts.nunito(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-                Text(
-                  '400e',
-                  style: GoogleFonts.nunito(
-                    fontSize: 18,
-                    fontWeight: FontWeight.w800,
-                  ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.symmetric(horizontal: 10),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Text(
-                  'wembley, London',
-                  style: GoogleFonts.nunito(
-                    fontSize: 14,
-                    color: Colors.grey[500],
-                    fontWeight: FontWeight.w400,
-                  ),
-                ),
-                Row(
-                  children: [
-                    const Icon(
-                      Icons.place,
-                      size: 14.0,
-                    ),
-                    Text(
-                      '2 km to city',
-                      style: GoogleFonts.nunito(
-                        fontSize: 14,
-                        color: Colors.grey[500],
-                        fontWeight: FontWeight.w400,
+              child: Column(
+                children: [
+                  Container(
+                    height: 140,
+                    decoration: const BoxDecoration(
+                      borderRadius: BorderRadius.only(
+                        topLeft: Radius.circular(18),
+                        topRight: Radius.circular(18),
+                      ),
+                      image: DecorationImage(
+                        image: AssetImage(
+                          'assets/images/hotel_1.png',
+                        ),
+                        fit: BoxFit.cover,
                       ),
                     ),
-                  ],
-                ),
-                Text(
-                  'per night',
-                  style: GoogleFonts.nunito(
-                    fontSize: 14,
-                    color: Colors.grey.shade800,
-                    fontWeight: FontWeight.w400,
+                    child: Stack(
+                      children: [
+                        Positioned(
+                          top: 5,
+                          right: -15,
+                          child: MaterialButton(
+                            color: buttonColor,
+                            shape: const CircleBorder(),
+                            onPressed: () {
+                              ApiService()
+                                  .putBottlesLiked(bottle.id, !bottle.isLiked);
+                              bottle.isLiked = !bottle.isLiked;
+                              setState(() {});
+                            },
+                            child: const Icon(
+                              Icons.favorite_outline_rounded,
+                              size: 20,
+                            ),
+                          ),
+                        )
+                      ],
+                    ),
                   ),
-                ),
-              ],
-            ),
-          ),
-          Container(
-            margin: const EdgeInsets.fromLTRB(10, 3, 10, 0),
-            child: Row(
-              children: [
-                Row(
-                  children: const [
-                    Icon(
-                      Icons.star_rate,
-                      size: 14.0,
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10, 10, 10, 0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'id: ${bottle.id}',
+                          style: GoogleFonts.nunito(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                        Text(
+                          '400e',
+                          style: GoogleFonts.nunito(
+                            fontSize: 18,
+                            fontWeight: FontWeight.w800,
+                          ),
+                        ),
+                      ],
                     ),
-                    Icon(
-                      Icons.star_rate,
-                      size: 14.0,
-                    ),
-                    Icon(
-                      Icons.star_rate,
-                      size: 14.0,
-                    ),
-                    Icon(
-                      Icons.star_rate,
-                      size: 14.0,
-                    ),
-                    Icon(
-                      Icons.star_border,
-                      size: 14.0,
-                    ),
-                  ],
-                ),
-                const SizedBox(width: 20),
-                Text(
-                  '42 reviews',
-                  style: GoogleFonts.nunito(
-                    fontSize: 14,
-                    color: Colors.grey[500],
-                    fontWeight: FontWeight.w400,
                   ),
-                ),
-              ],
-            ),
-          ),
-        ],
-      ),
-    );
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Text(
+                          'wembley, London',
+                          style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            color: Colors.grey[500],
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.place,
+                              size: 14.0,
+                            ),
+                            Text(
+                              '2 km to city',
+                              style: GoogleFonts.nunito(
+                                fontSize: 14,
+                                color: Colors.grey[500],
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
+                        ),
+                        Text(
+                          'per night',
+                          style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            color: Colors.grey.shade800,
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.fromLTRB(10, 3, 10, 0),
+                    child: Row(
+                      children: [
+                        Row(
+                          children: const [
+                            Icon(
+                              Icons.star_rate,
+                              size: 14.0,
+                            ),
+                            Icon(
+                              Icons.star_rate,
+                              size: 14.0,
+                            ),
+                            Icon(
+                              Icons.star_rate,
+                              size: 14.0,
+                            ),
+                            Icon(
+                              Icons.star_rate,
+                              size: 14.0,
+                            ),
+                            Icon(
+                              Icons.star_border,
+                              size: 14.0,
+                            ),
+                          ],
+                        ),
+                        const SizedBox(width: 20),
+                        Text(
+                          '42 reviews',
+                          style: GoogleFonts.nunito(
+                            fontSize: 14,
+                            color: Colors.grey[500],
+                            fontWeight: FontWeight.w400,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ],
+              ),
+            )));
   }
 }
