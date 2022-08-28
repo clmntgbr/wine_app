@@ -72,7 +72,8 @@ class BottlesLikedSectionState extends State<BottlesLikedSection> {
                       height: 100.0,
                       width: 100.0,
                       child: CircularProgressIndicator(
-                        backgroundColor: Colors.redAccent,
+                        valueColor:
+                            AlwaysStoppedAnimation<Color>(Colors.redAccent),
                       ),
                     ));
               },

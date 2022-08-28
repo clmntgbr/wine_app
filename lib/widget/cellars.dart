@@ -204,7 +204,8 @@ class CreateCellarSectionState extends State<CreateCellarSection> {
                         isCallApi = false;
                         setState(() {
                           createButton = const CircularProgressIndicator(
-                            backgroundColor: Colors.white,
+                            valueColor:
+                                AlwaysStoppedAnimation<Color>(Colors.white),
                           );
                           ApiService().postCellar(
                               nameController.text.toString(),
@@ -248,7 +249,6 @@ class CellarsSectionState extends State<CellarsSection> {
     return Container(
         width: MediaQuery.of(context).size.width,
         padding: const EdgeInsets.all(10),
-        color: Colors.white,
         child: SingleChildScrollView(
             child: Column(
           children: [
@@ -269,7 +269,8 @@ class CellarsSectionState extends State<CellarsSection> {
                         height: 100.0,
                         width: 100.0,
                         child: CircularProgressIndicator(
-                          backgroundColor: Colors.redAccent,
+                          valueColor:
+                              AlwaysStoppedAnimation<Color>(Colors.redAccent),
                         ),
                       ));
                 },
