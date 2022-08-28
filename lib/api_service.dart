@@ -1,15 +1,15 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
-import 'package:http/http.dart';
 import 'package:wine_app/model/get_bottles.dart';
+import 'package:http/http.dart';
 import 'constants.dart';
 import 'model/get_cellars.dart';
 import 'globals.dart' as globals;
 
 class ApiService {
   Future<Cellars> getCellars() async {
-    debugPrint('GET${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}');
+    debugPrint('GET ${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}');
 
     Response response = await get(
         Uri.parse(ApiConstants.baseUrl + ApiConstants.cellarsEndpoint),

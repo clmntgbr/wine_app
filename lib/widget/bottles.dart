@@ -93,7 +93,7 @@ class BottlesFilter extends StatelessWidget {
                   size: 25,
                 ),
                 onPressed: null,
-              ),
+              )
             ],
           )
         ],
