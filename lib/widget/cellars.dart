@@ -302,7 +302,7 @@ class CellarsCardState extends State<CellarsCard> {
     Color cellarColor = Colors.grey.shade200;
 
     if (cellar.isActive) {
-      cellarColor = Colors.greenAccent;
+      cellarColor = Colors.green;
     }
 
     return Container(
@@ -325,7 +325,7 @@ class CellarsCardState extends State<CellarsCard> {
                 borderRadius: const BorderRadius.all(
                   Radius.circular(18),
                 ),
-                border: Border.all(color: cellarColor, width: 2),
+                border: Border.all(color: cellarColor, width: 3),
                 boxShadow: [
                   BoxShadow(
                     color: Colors.grey.shade200,
