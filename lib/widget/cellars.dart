@@ -5,7 +5,6 @@ import 'package:wine_app/api_service.dart';
 import 'package:wine_app/globals.dart' as globals;
 import 'package:wine_app/main.dart';
 import 'package:wine_app/model/get_cellars.dart';
-import 'dart:io';
 
 class CellarsPage extends StatelessWidget {
   const CellarsPage({Key? key}) : super(key: key);
@@ -290,7 +289,7 @@ class UpdateCellarSection extends StatefulWidget {
 
 class UpdateCellarSectionState extends State<UpdateCellarSection> {
   bool isCallApi = true;
-  bool isInit = false;
+
   @override
   void initState() {
     super.initState();
@@ -299,6 +298,7 @@ class UpdateCellarSectionState extends State<UpdateCellarSection> {
   final formKey = GlobalKey<FormState>();
   double _currentSliderRowValue = 10;
   double _currentSliderColumnValue = 10;
+  bool isInit = false;
   TextEditingController nameController = TextEditingController();
 
   Widget updateButton = const Text('Modifier');
@@ -306,11 +306,16 @@ class UpdateCellarSectionState extends State<UpdateCellarSection> {
   @override
   Widget build(BuildContext context) {
     int cellarId = widget.id;
+    debugPrint('$isInit');
 
     if (!isInit) {
       _currentSliderRowValue = widget.rowSliderValue.toDouble();
       _currentSliderColumnValue = widget.columnSliderValue.toDouble();
       nameController = TextEditingController(text: widget.name);
+    }
+
+    if (isInit) {
+      nameController = nameController;
     }
 
     return Scaffold(
@@ -409,6 +414,7 @@ class UpdateCellarSectionState extends State<UpdateCellarSection> {
                     onPressed: () {
                       if (isCallApi && formKey.currentState!.validate()) {
                         isCallApi = false;
+                        isInit = true;
                         setState(() {
                           updateButton = const CircularProgressIndicator(
                             valueColor:
