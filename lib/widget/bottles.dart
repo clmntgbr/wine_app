@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:wine_app/api_service.dart';
+import 'package:wine_app/globals.dart';
 import 'package:wine_app/model/get_bottles.dart';
+import 'package:wine_app/widget/bottle.dart';
 
 class BottlesSection extends StatefulWidget {
   const BottlesSection({super.key});
@@ -130,14 +132,39 @@ class BottlesCardState extends State<BottlesCard> {
       buttonColor = Colors.greenAccent;
     }
 
+    Row alertAt = Row();
+    if (bottle.alertAt != null) {
+      alertAt = Row(
+        children: [
+          const Icon(
+            Icons.notifications_none,
+            size: 14.0,
+          ),
+          Text(
+            '  ${bottle.alertAt}',
+            style: GoogleFonts.nunito(
+              fontSize: 14,
+              color: Colors.grey[500],
+              fontWeight: FontWeight.w400,
+            ),
+          ),
+        ],
+      );
+    }
+
     return Container(
         padding: const EdgeInsets.all(10),
         child: MaterialButton(
-            onPressed: () async {},
+            onPressed: () async {
+              Navigator.push(
+                  context,
+                  MaterialPageRoute(
+                      builder: (_) => BottlePage(bottleId: bottle.id)));
+            },
             padding: const EdgeInsets.all(0),
             child: Container(
               margin: const EdgeInsets.all(0),
-              height: 230,
+              height: 250,
               width: double.infinity,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -198,14 +225,14 @@ class BottlesCardState extends State<BottlesCard> {
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Text(
-                          'id: ${bottle.id}',
+                          splitString(bottle.wineName, 25),
                           style: GoogleFonts.nunito(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
                           ),
                         ),
                         Text(
-                          '400e',
+                          bottle.position ?? '',
                           style: GoogleFonts.nunito(
                             fontSize: 18,
                             fontWeight: FontWeight.w800,
@@ -219,22 +246,14 @@ class BottlesCardState extends State<BottlesCard> {
                     child: Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        Text(
-                          'wembley, London',
-                          style: GoogleFonts.nunito(
-                            fontSize: 14,
-                            color: Colors.grey[500],
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
                         Row(
                           children: [
                             const Icon(
-                              Icons.place,
+                              Icons.liquor,
                               size: 14.0,
                             ),
                             Text(
-                              '2 km to city',
+                              '  ${splitString(bottle.wineAppellationName, 30)}',
                               style: GoogleFonts.nunito(
                                 fontSize: 14,
                                 color: Colors.grey[500],
@@ -243,57 +262,60 @@ class BottlesCardState extends State<BottlesCard> {
                             ),
                           ],
                         ),
-                        Text(
-                          'per night',
-                          style: GoogleFonts.nunito(
-                            fontSize: 14,
-                            color: Colors.grey.shade800,
-                            fontWeight: FontWeight.w400,
-                          ),
+                        alertAt
+                      ],
+                    ),
+                  ),
+                  Container(
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        Row(
+                          children: [
+                            const Icon(
+                              Icons.castle,
+                              size: 14.0,
+                            ),
+                            Text(
+                              '  ${splitString(bottle.wineDomainName, 30)}',
+                              style: GoogleFonts.nunito(
+                                fontSize: 14,
+                                color: Colors.grey[500],
+                                fontWeight: FontWeight.w400,
+                              ),
+                            ),
+                          ],
                         ),
                       ],
                     ),
                   ),
                   Container(
-                    margin: const EdgeInsets.fromLTRB(10, 3, 10, 0),
+                    margin: const EdgeInsets.symmetric(horizontal: 10),
                     child: Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
                         Row(
-                          children: const [
-                            Icon(
-                              Icons.star_rate,
+                          children: [
+                            const Icon(
+                              Icons.place,
                               size: 14.0,
                             ),
-                            Icon(
-                              Icons.star_rate,
-                              size: 14.0,
-                            ),
-                            Icon(
-                              Icons.star_rate,
-                              size: 14.0,
-                            ),
-                            Icon(
-                              Icons.star_rate,
-                              size: 14.0,
-                            ),
-                            Icon(
-                              Icons.star_border,
-                              size: 14.0,
+                            Text(
+                              splitString(
+                                  '  ${bottle.wineRegionName}, ${bottle.wineCountryName}',
+                                  40),
+                              style: GoogleFonts.nunito(
+                                fontSize: 14,
+                                color: Colors.grey[500],
+                                fontWeight: FontWeight.w400,
+                              ),
                             ),
                           ],
                         ),
-                        const SizedBox(width: 20),
-                        Text(
-                          '42 reviews',
-                          style: GoogleFonts.nunito(
-                            fontSize: 14,
-                            color: Colors.grey[500],
-                            fontWeight: FontWeight.w400,
-                          ),
-                        ),
                       ],
                     ),
-                  ),
+                  )
                 ],
               ),
             )));

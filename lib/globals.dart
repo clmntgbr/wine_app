@@ -2,9 +2,9 @@ import 'package:flutter/material.dart';
 
 int cellarActiveId = 0;
 
-String splitString(String value) {
-  if (value.length <= 25) {
+String splitString(String value, int length) {
+  if (value.length <= length) {
     return value;
   }
-  return '${value.substring(0, 25)} ...';
+  return '${value.substring(0, length)} ...';
 }

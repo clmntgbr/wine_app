@@ -188,7 +188,7 @@ class CellarsCardState extends State<CellarsCard> {
                               size: 20,
                             ),
                           )),
-                      Text(globals.splitString(cellar.name),
+                      Text(globals.splitString(cellar.name, 25),
                           maxLines: 1,
                           style: GoogleFonts.nunito(
                             fontSize: 18,

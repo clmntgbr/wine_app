@@ -8,6 +8,9 @@ import 'model/get_cellars.dart';
 import 'globals.dart' as globals;
 
 class ApiService {
+  static const String token =
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjE3ODA0NjgsImV4cCI6MTY2MjM4NTI2OCwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.Fi3khf_oMyNAntGNoXbO3Fl2AfuTJ67MChMjtrnZPQJMPV_Wq9bpSo_cEo_MFX8e39wX_ZA7zPF1IF7SlJffACeHSuyprOLi0QFabg0FQ7pbTdfLHSNREX7E4Duguay3wIhi39-Ng3LfkkwqJLrOMEffkRDfUR4EmPtJEdzFRTeAKG1G1gRGyJo1pAOmPEi-FpmHqJr4tyJab5PjPSk2Fc1kvoM75qvMUg9P13wLUTDGtNbxyFQRTpEDycniKoGws5ym9AUUpc4MPxrGfzS-VlfxFcJzW_-HpUsvlWgkNYYd401LMD4ZHVlVJM8fCd9adSaSNIfPD-z7HUGcibdQhQ';
+
   Future<Cellars> getCellars() async {
     debugPrint('GET ${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}');
 
@@ -16,8 +19,7 @@ class ApiService {
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
-          'Authorization':
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjExNzU2MTEsImV4cCI6MTY2MTc4MDQxMSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.5c_DnXJ4sm0ZvBjqBGBOGKwVFo1cXlPmJZvg4YIfrKt3wXHLd-Z4Gy8Qju-2r-fMbn6DpsUONVDp8dK2gQk1cRfojzZnu7_Y4_zki0VNFii89lXHebKKHeRZxILNxPGxxndREA_AIJg2Ybk3b9iKL2bbXv3adHQ0bMXEmzPf50S7AJ_Hj03zqmal7cO18tFattpuBQUm2X-70-J_pKkaRu69DfBQR7wAlg6DX5aZRl6S2jGtDXlmpAHMk5W8GjepOJkV_3SnNi4PiK4rKqSnurrLd5cuA1UNhJwx1rkQg7_80Ote8zSEfE2dYZUXLeW9GqpFQrqkUte5RJSCRAFHBA'
+          'Authorization': token
         });
 
     if (response.statusCode == 200) {
@@ -43,12 +45,12 @@ class ApiService {
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
-          'Authorization':
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjExNzU2MTEsImV4cCI6MTY2MTc4MDQxMSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.5c_DnXJ4sm0ZvBjqBGBOGKwVFo1cXlPmJZvg4YIfrKt3wXHLd-Z4Gy8Qju-2r-fMbn6DpsUONVDp8dK2gQk1cRfojzZnu7_Y4_zki0VNFii89lXHebKKHeRZxILNxPGxxndREA_AIJg2Ybk3b9iKL2bbXv3adHQ0bMXEmzPf50S7AJ_Hj03zqmal7cO18tFattpuBQUm2X-70-J_pKkaRu69DfBQR7wAlg6DX5aZRl6S2jGtDXlmpAHMk5W8GjepOJkV_3SnNi4PiK4rKqSnurrLd5cuA1UNhJwx1rkQg7_80Ote8zSEfE2dYZUXLeW9GqpFQrqkUte5RJSCRAFHBA'
+          'Authorization': token
         });
 
     if (response.statusCode == 200) {
       Bottles model = bottlesFromJson(response.body.toString());
+      debugPrint(model.toString());
       return model;
     }
 
@@ -70,8 +72,7 @@ class ApiService {
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
-          'Authorization':
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjExNzU2MTEsImV4cCI6MTY2MTc4MDQxMSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.5c_DnXJ4sm0ZvBjqBGBOGKwVFo1cXlPmJZvg4YIfrKt3wXHLd-Z4Gy8Qju-2r-fMbn6DpsUONVDp8dK2gQk1cRfojzZnu7_Y4_zki0VNFii89lXHebKKHeRZxILNxPGxxndREA_AIJg2Ybk3b9iKL2bbXv3adHQ0bMXEmzPf50S7AJ_Hj03zqmal7cO18tFattpuBQUm2X-70-J_pKkaRu69DfBQR7wAlg6DX5aZRl6S2jGtDXlmpAHMk5W8GjepOJkV_3SnNi4PiK4rKqSnurrLd5cuA1UNhJwx1rkQg7_80Ote8zSEfE2dYZUXLeW9GqpFQrqkUte5RJSCRAFHBA'
+          'Authorization': token
         });
 
     if (response.statusCode == 200) {
@@ -95,8 +96,7 @@ class ApiService {
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
-          'Authorization':
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjExNzU2MTEsImV4cCI6MTY2MTc4MDQxMSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.5c_DnXJ4sm0ZvBjqBGBOGKwVFo1cXlPmJZvg4YIfrKt3wXHLd-Z4Gy8Qju-2r-fMbn6DpsUONVDp8dK2gQk1cRfojzZnu7_Y4_zki0VNFii89lXHebKKHeRZxILNxPGxxndREA_AIJg2Ybk3b9iKL2bbXv3adHQ0bMXEmzPf50S7AJ_Hj03zqmal7cO18tFattpuBQUm2X-70-J_pKkaRu69DfBQR7wAlg6DX5aZRl6S2jGtDXlmpAHMk5W8GjepOJkV_3SnNi4PiK4rKqSnurrLd5cuA1UNhJwx1rkQg7_80Ote8zSEfE2dYZUXLeW9GqpFQrqkUte5RJSCRAFHBA'
+          'Authorization': token
         },
         body: json.encode(body));
   }
@@ -116,8 +116,7 @@ class ApiService {
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
-          'Authorization':
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjExNzU2MTEsImV4cCI6MTY2MTc4MDQxMSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.5c_DnXJ4sm0ZvBjqBGBOGKwVFo1cXlPmJZvg4YIfrKt3wXHLd-Z4Gy8Qju-2r-fMbn6DpsUONVDp8dK2gQk1cRfojzZnu7_Y4_zki0VNFii89lXHebKKHeRZxILNxPGxxndREA_AIJg2Ybk3b9iKL2bbXv3adHQ0bMXEmzPf50S7AJ_Hj03zqmal7cO18tFattpuBQUm2X-70-J_pKkaRu69DfBQR7wAlg6DX5aZRl6S2jGtDXlmpAHMk5W8GjepOJkV_3SnNi4PiK4rKqSnurrLd5cuA1UNhJwx1rkQg7_80Ote8zSEfE2dYZUXLeW9GqpFQrqkUte5RJSCRAFHBA'
+          'Authorization': token
         },
         body: json.encode(body));
   }
@@ -135,8 +134,7 @@ class ApiService {
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
-          'Authorization':
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjExNzU2MTEsImV4cCI6MTY2MTc4MDQxMSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.5c_DnXJ4sm0ZvBjqBGBOGKwVFo1cXlPmJZvg4YIfrKt3wXHLd-Z4Gy8Qju-2r-fMbn6DpsUONVDp8dK2gQk1cRfojzZnu7_Y4_zki0VNFii89lXHebKKHeRZxILNxPGxxndREA_AIJg2Ybk3b9iKL2bbXv3adHQ0bMXEmzPf50S7AJ_Hj03zqmal7cO18tFattpuBQUm2X-70-J_pKkaRu69DfBQR7wAlg6DX5aZRl6S2jGtDXlmpAHMk5W8GjepOJkV_3SnNi4PiK4rKqSnurrLd5cuA1UNhJwx1rkQg7_80Ote8zSEfE2dYZUXLeW9GqpFQrqkUte5RJSCRAFHBA'
+          'Authorization': token
         },
         body: json.encode(body));
   }
@@ -151,8 +149,7 @@ class ApiService {
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
-          'Authorization':
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjExNzU2MTEsImV4cCI6MTY2MTc4MDQxMSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.5c_DnXJ4sm0ZvBjqBGBOGKwVFo1cXlPmJZvg4YIfrKt3wXHLd-Z4Gy8Qju-2r-fMbn6DpsUONVDp8dK2gQk1cRfojzZnu7_Y4_zki0VNFii89lXHebKKHeRZxILNxPGxxndREA_AIJg2Ybk3b9iKL2bbXv3adHQ0bMXEmzPf50S7AJ_Hj03zqmal7cO18tFattpuBQUm2X-70-J_pKkaRu69DfBQR7wAlg6DX5aZRl6S2jGtDXlmpAHMk5W8GjepOJkV_3SnNi4PiK4rKqSnurrLd5cuA1UNhJwx1rkQg7_80Ote8zSEfE2dYZUXLeW9GqpFQrqkUte5RJSCRAFHBA'
+          'Authorization': token
         });
   }
 
@@ -167,8 +164,7 @@ class ApiService {
         headers: {
           'Content-Type': 'application/ld+json',
           'Accept': 'application/ld+json',
-          'Authorization':
-              'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjExNzU2MTEsImV4cCI6MTY2MTc4MDQxMSwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.5c_DnXJ4sm0ZvBjqBGBOGKwVFo1cXlPmJZvg4YIfrKt3wXHLd-Z4Gy8Qju-2r-fMbn6DpsUONVDp8dK2gQk1cRfojzZnu7_Y4_zki0VNFii89lXHebKKHeRZxILNxPGxxndREA_AIJg2Ybk3b9iKL2bbXv3adHQ0bMXEmzPf50S7AJ_Hj03zqmal7cO18tFattpuBQUm2X-70-J_pKkaRu69DfBQR7wAlg6DX5aZRl6S2jGtDXlmpAHMk5W8GjepOJkV_3SnNi4PiK4rKqSnurrLd5cuA1UNhJwx1rkQg7_80Ote8zSEfE2dYZUXLeW9GqpFQrqkUte5RJSCRAFHBA'
+          'Authorization': token
         },
         body: json.encode(body));
 

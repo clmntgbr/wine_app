@@ -12,7 +12,7 @@ class Bottles {
 
   @override
   String toString() {
-    return '{context: $context, id: $id, type: $type, totalItems: $totalItems}';
+    return '{context: $context, id: $id, type: $type, totalItems: $totalItems, hydraMember: $hydraMember}';
   }
 
   Bottles({
@@ -39,21 +39,46 @@ class Bottles {
 class HydraMember {
   String contextId;
   int id;
-  String formatName;
   String? position;
   String? alertAt;
   bool isLiked;
+  String wineName;
+  String wineAppellationName;
+  String wineDomainName;
+  String wineRegionName;
+  String wineCountryName;
+  String capacityName;
 
-  HydraMember(this.contextId, this.id, this.formatName, this.position,
-      this.alertAt, this.isLiked);
+  HydraMember(
+      this.contextId,
+      this.id,
+      this.position,
+      this.alertAt,
+      this.isLiked,
+      this.wineName,
+      this.wineAppellationName,
+      this.wineDomainName,
+      this.wineRegionName,
+      this.wineCountryName,
+      this.capacityName);
 
   factory HydraMember.fromJson(dynamic json) {
-    return HydraMember(json['@id'], json['id'], json['formatName'],
-        json['position'], json['alertAt'], json['isLiked']);
+    return HydraMember(
+        json['@id'],
+        json['id'],
+        json['position'],
+        json['alertAt'],
+        json['isLiked'],
+        json['wine']['name'],
+        json['wine']['appellation']['name'],
+        json['wine']['domain']['name'],
+        json['wine']['region']['name'],
+        json['wine']['country']['name'],
+        json['capacity']['name']);
   }
 
   @override
   String toString() {
-    return '{@id: $contextId, id: $id, formatName: $formatName, position: $position, alertAt: $alertAt, isLiked: $isLiked}';
+    return '{@id: $contextId, id: $id, wineName: $wineName, position: $position, alertAt: $alertAt, isLiked: $isLiked, wineDomainName: $wineDomainName, wineAppellationName: $wineAppellationName, wineRegionName: $wineRegionName, wineCountryName: $wineCountryName, capacityName: $capacityName}';
   }
 }
