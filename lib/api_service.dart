@@ -1,6 +1,7 @@
 import 'dart:async';
 import 'dart:convert';
 import 'package:flutter/material.dart';
+import 'package:wine_app/model/get_bottle.dart';
 import 'package:wine_app/model/get_bottles.dart';
 import 'package:http/http.dart';
 import 'constants.dart';
@@ -50,6 +51,27 @@ class ApiService {
 
     if (response.statusCode == 200) {
       Bottles model = bottlesFromJson(response.body.toString());
+      return model;
+    }
+
+    throw Exception('Failed to load Bottles');
+  }
+
+  Future<Bottle> getBottle(int bottleId) async {
+    debugPrint(
+        'GET ${ApiConstants.baseUrl}${ApiConstants.bottlesEndpoint}/$bottleId');
+
+    Response response = await get(
+        Uri.parse(
+            '${ApiConstants.baseUrl}${ApiConstants.bottlesEndpoint}/$bottleId'),
+        headers: {
+          'Content-Type': 'application/ld+json',
+          'Accept': 'application/ld+json',
+          'Authorization': token
+        });
+
+    if (response.statusCode == 200) {
+      Bottle model = bottleFromJson(response.body.toString());
       debugPrint(model.toString());
       return model;
     }
