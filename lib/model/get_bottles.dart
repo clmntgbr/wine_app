@@ -1,5 +1,4 @@
 import 'dart:convert';
-import 'dart:ffi';
 
 Bottles bottlesFromJson(String str) => Bottles.fromJson(json.decode(str));
 
