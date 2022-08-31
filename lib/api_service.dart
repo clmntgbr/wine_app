@@ -10,7 +10,7 @@ import 'globals.dart' as globals;
 
 class ApiService {
   static const String token =
-      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjE3ODA0NjgsImV4cCI6MTY2MjM4NTI2OCwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.Fi3khf_oMyNAntGNoXbO3Fl2AfuTJ67MChMjtrnZPQJMPV_Wq9bpSo_cEo_MFX8e39wX_ZA7zPF1IF7SlJffACeHSuyprOLi0QFabg0FQ7pbTdfLHSNREX7E4Duguay3wIhi39-Ng3LfkkwqJLrOMEffkRDfUR4EmPtJEdzFRTeAKG1G1gRGyJo1pAOmPEi-FpmHqJr4tyJab5PjPSk2Fc1kvoM75qvMUg9P13wLUTDGtNbxyFQRTpEDycniKoGws5ym9AUUpc4MPxrGfzS-VlfxFcJzW_-HpUsvlWgkNYYd401LMD4ZHVlVJM8fCd9adSaSNIfPD-z7HUGcibdQhQ';
+      'Bearer eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJpYXQiOjE2NjE5NjAzMDYsImV4cCI6MTY2MjU2NTEwNiwicm9sZXMiOlsiUk9MRV9BRE1JTiIsIlJPTEVfVVNFUiJdLCJ1c2VybmFtZSI6ImNsZW1lbnRAZ21haWwuY29tIn0.JCPXOd3FbMrw9rb-6jak-DQYJU1aTSdX3EslgCLs4xTZ82ux2igf9eH95xWtQKlhFxNAET4tG9MduwH3KAsjhwKmxN8iMjgms5hcfgUsRFr0_BZo0-Yl0RcRMj5BsgoxtKGpu5wiuSJa0CWwihJSFVkUUp740yZYQ9PmeAXWJ6fSiPP4eGFj4kVUtP9wBfZMW_be96UM3OfhboJe6fMv4GqGXi_xYbOJm9zx4JVTfGSz6ZR4NT3k74_s0u1iNUQKyCDX_-sZmCMWO3hEE6jt3Yu_0joc67vlPrPNMRvPrRjfRht7RV7qvmwZLAkRBJ4YOwAIOYRoIe5o5vcgVoHSPw';
 
   Future<Cellars> getCellars() async {
     debugPrint('GET ${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}');
@@ -143,14 +143,14 @@ class ApiService {
         body: json.encode(body));
   }
 
-  void putCellar(int cellarId, String name, int column, int row) async {
+  Future<bool> putCellar(int cellarId, String name, int column, int row) async {
     Map body = {'name': name.trim(), 'row': row, 'clmn': column};
 
     debugPrint(
         'PUT ${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}/$cellarId');
     debugPrint(json.encode(body));
 
-    put(
+    Response response = await put(
         Uri.parse(
             '${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}/$cellarId'),
         headers: {
@@ -159,13 +159,19 @@ class ApiService {
           'Authorization': token
         },
         body: json.encode(body));
+
+    if (response.statusCode == 200) {
+      return true;
+    }
+
+    return false;
   }
 
-  void deleteCellar(int cellarId) async {
+  Future<bool> deleteCellar(int cellarId) async {
     debugPrint(
         'DELETE ${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}/$cellarId');
 
-    delete(
+    Response response = await delete(
         Uri.parse(
             '${ApiConstants.baseUrl}${ApiConstants.cellarsEndpoint}/$cellarId'),
         headers: {
@@ -173,6 +179,13 @@ class ApiService {
           'Accept': 'application/ld+json',
           'Authorization': token
         });
+
+    if (response.statusCode == 204) {
+      globals.cellarActiveId = 0;
+      return true;
+    }
+
+    return false;
   }
 
   Future<bool> postCellar(String name, int column, int row) async {
@@ -190,7 +203,7 @@ class ApiService {
         },
         body: json.encode(body));
 
-    if (response.statusCode == 200) {
+    if (response.statusCode == 201) {
       return true;
     }
 

@@ -129,7 +129,7 @@ class BottlesCardState extends State<BottlesCard> {
 
     Color buttonColor = Colors.white;
     if (bottle.isLiked) {
-      buttonColor = Colors.greenAccent;
+      buttonColor = Colors.redAccent;
     }
 
     Row alertAt = Row();
@@ -253,7 +253,7 @@ class BottlesCardState extends State<BottlesCard> {
                               size: 14.0,
                             ),
                             Text(
-                              '  ${splitString(bottle.wineAppellationName, 30)}',
+                              '  ${splitString(bottle.wineAppellationName, 25)}',
                               style: GoogleFonts.nunito(
                                 fontSize: 14,
                                 color: Colors.grey[500],

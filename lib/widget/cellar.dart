@@ -23,8 +23,7 @@ class CreateCellarPage extends StatelessWidget {
                   size: 20,
                 ),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const CellarsPage()));
+                  Navigator.pop(context);
                 },
               )),
         ));
@@ -153,15 +152,31 @@ class CreateCellarSectionState extends State<CreateCellarSection> {
                             valueColor:
                                 AlwaysStoppedAnimation<Color>(Colors.white),
                           );
-                          ApiService().postCellar(
-                              nameController.text.toString(),
-                              _currentSliderColumnValue.round(),
-                              _currentSliderRowValue.round());
-                          Future.delayed(const Duration(seconds: 5)).then((_) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => const CellarsPage()));
+                          ApiService()
+                              .postCellar(
+                                  nameController.text.toString(),
+                                  _currentSliderColumnValue.round(),
+                                  _currentSliderRowValue.round())
+                              .then((value) {
+                            if (value) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const CellarsPage()));
+                            } else {
+                              isCallApi = true;
+                              setState(() {
+                                createButton = const Text('Créer');
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Nous sommes désolés, une erreur s\'est produite. Veuillez enregistrer vos modifications de nouveau.',
+                                      textAlign: TextAlign.center),
+                                  backgroundColor: Colors.redAccent,
+                                ),
+                              );
+                            }
                           });
                         });
                       }
@@ -208,8 +223,7 @@ class UpdateCellarPage extends StatelessWidget {
                   size: 20,
                 ),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const CellarsPage()));
+                  Navigator.pop(context);
                 },
               )),
         ));
@@ -255,7 +269,6 @@ class UpdateCellarSectionState extends State<UpdateCellarSection> {
   @override
   Widget build(BuildContext context) {
     int cellarId = widget.id;
-    debugPrint('$isInit');
 
     if (!isInit) {
       _currentSliderRowValue = widget.rowSliderValue.toDouble();
@@ -369,16 +382,32 @@ class UpdateCellarSectionState extends State<UpdateCellarSection> {
                             valueColor:
                                 AlwaysStoppedAnimation<Color>(Colors.white),
                           );
-                          ApiService().putCellar(
-                              cellarId,
-                              nameController.text.toString(),
-                              _currentSliderColumnValue.round(),
-                              _currentSliderRowValue.round());
-                          Future.delayed(const Duration(seconds: 5)).then((_) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => const CellarsPage()));
+                          ApiService()
+                              .putCellar(
+                                  cellarId,
+                                  nameController.text.toString(),
+                                  _currentSliderColumnValue.round(),
+                                  _currentSliderRowValue.round())
+                              .then((value) {
+                            if (value) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const CellarsPage()));
+                            } else {
+                              isCallApi = true;
+                              setState(() {
+                                updateButton = const Text('Modifier');
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Nous sommes désolés, une erreur s\'est produite. Veuillez enregistrer vos modifications de nouveau.',
+                                      textAlign: TextAlign.center),
+                                  backgroundColor: Colors.redAccent,
+                                ),
+                              );
+                            }
                           });
                         });
                       }
@@ -404,12 +433,27 @@ class UpdateCellarSectionState extends State<UpdateCellarSection> {
                             valueColor:
                                 AlwaysStoppedAnimation<Color>(Colors.redAccent),
                           );
-                          ApiService().deleteCellar(cellarId);
-                          Future.delayed(const Duration(seconds: 5)).then((_) {
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (_) => const CellarsPage()));
+                          ApiService().deleteCellar(cellarId).then((value) {
+                            if (value) {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (_) => const CellarsPage()));
+                            } else {
+                              isCallApi = true;
+                              setState(() {
+                                deleteButton = const Text('Supprimer',
+                                    style: TextStyle(color: Colors.redAccent));
+                              });
+                              ScaffoldMessenger.of(context).showSnackBar(
+                                const SnackBar(
+                                  content: Text(
+                                      'Nous sommes désolés, une erreur s\'est produite. Veuillez enregistrer vos modifications de nouveau.',
+                                      textAlign: TextAlign.center),
+                                  backgroundColor: Colors.redAccent,
+                                ),
+                              );
+                            }
                           });
                         });
                       }

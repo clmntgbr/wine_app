@@ -35,8 +35,7 @@ class CellarsPage extends StatelessWidget {
                   size: 20,
                 ),
                 onPressed: () {
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (_) => const HomePage()));
+                  Navigator.pop(context);
                 },
               ),
               actions: [
